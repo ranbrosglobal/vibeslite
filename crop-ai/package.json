@@ -1,0 +1,22 @@
+{
+  "name": "vibeslite-crop-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Crop Monitoring from Drone Images - tiling, OpenCV features, training, field analysis, smart-farm dashboard. Single-file backend (server.js).",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test server.test.js lib/lib.test.js aoi-routes.test.js"
+  },
+  "dependencies": {
+    "exifreader": "^4.46.0",
+    "express": "^4.19.2",
+    "geotiff": "^3.0.5",
+    "jpeg-js": "^0.4.4",
+    "multer": "^2.0.1",
+    "opencv-wasm": "4.3.0-10",
+    "pngjs": "^7.0.0",
+    "proj4": "^2.22.0"
+  }
+}

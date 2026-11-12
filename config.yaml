@@ -1,0 +1,63 @@
+# Vibes Lite - platform configuration
+# Relative paths are resolved against the project root.
+# Environment variables (see .env.example) override the values below.
+
+project:
+  name: Vibes Lite
+  version: 0.1.0
+  description: Lightweight open agriculture intelligence platform
+
+paths:
+  raw_data: data/raw
+  processed_data: data/processed
+  outputs: outputs
+
+analysis:
+  default_index: NDVI
+  # Rasters larger than this are decimated (using raster overviews when
+  # available) before analysis so a single request stays responsive.
+  max_analysis_pixels: 4000000
+  # Defaults used when a raster carries no usable band descriptions.
+  # 1-based band numbers, common 4-band order: Blue, Green, Red, NIR.
+  fallback_bands:
+    blue: 1
+    green: 2
+    red: 3
+    nir: 4
+
+crop_health:
+  thresholds:
+    very_low: 0.20
+    low: 0.40
+    moderate: 0.60
+    healthy: 0.80
+  # Weak vegetation patches smaller than this are discarded as noise.
+  min_patch_area_ha: 0.05
+
+opencv:
+  enabled: true
+  denoise_h: 7
+  gaussian_kernel: 5
+  canny_low: 50
+  canny_high: 150
+
+visualization:
+  enabled: true
+  dpi: 130
+  figure_size: [8.5, 7.0]
+
+timeseries:
+  # Minimum number of observations required for a trend estimate.
+  min_observations: 2
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  cors_origins: "*"
+
+security:
+  allowed_raster_ext: [".tif", ".tiff", ".vrt", ".img"]
+  allowed_vector_ext: [".geojson", ".json"]
+  allowed_image_ext: [".png", ".jpg", ".jpeg", ".tif", ".tiff"]
+  allowed_table_ext: [".csv"]
+  max_upload_mb: 200

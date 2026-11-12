@@ -1,0 +1,94 @@
+console health: 200   session: vibes-a2z
+
+── TAB ops ──
+  [shot] tab-ops.png
+  click open camera modal [#btn-camera] rc=0 :: toast="Camera unavailable: Permission denied"
+  camera modal visible: false
+  [shot] ops-camera-open.png
+  click capture frame (no camera in headless) [#btn-capture] rc=1 :: toast="Camera unavailable: Permission denied"
+  click close camera modal [#btn-cam-close] rc=1 :: toast="Camera unavailable: Permission denied"
+  camera modal hidden again: false
+  -- ingest REAL photo (Wikimedia maize field, 1024px) --
+  ingest toast="Failed to fetch"
+  [shot] ops-after-ingest.png
+  field count now: 2
+
+── TAB analysis ──
+  [shot] tab-analysis.png
+  newest field: real-drone-test
+  click analyze newest field [#btn-predict] rc=0 :: toast="real-drone-test analyzed — healthy 93.8%"
+  distribution visible: healthy 93.8% stressed 0.0% soil 0.0% weed 6.3% 
+  click show geotag form [#btn-geotag-show] rc=0 :: toast="real-drone-test analyzed — healthy 93.8%"
+  click geotag the new field at real farmland [#btn-geotag] rc=0 :: toast="Field georeferenced"
+  field gps now: "lat":52.625
+  click export GeoJSON [#btn-geojson] rc=0 :: toast="GeoJSON exported — QGIS / Google Earth ready"
+  click use device GPS (permission test) [#btn-geo-gps] rc=0 :: toast="GPS denied"
+  [shot] analysis-done.png
+
+── TAB label ──
+  [shot] tab-label.png
+  label buttons present: 6
+  click train dataset from labels [#btn-from-labels] rc=0 :: toast="Dataset +0 tiles (3 total)"
+  click train + cross-validate [#btn-train] rc=0 :: toast="Model trained — CV accuracy 33.3%"
+
+── TAB lab ──
+  [shot] tab-lab.png
+  models: 0
+  click open metrics for last model [#tab-lab button:has-text("Metrics")] rc=1 :: toast="Model trained — CV accuracy 33.3%"
+  metrics card: cv accuracy 33.3% macro f1 — folds 2 samples tested 3 
+
+── TAB ai ──
+  [shot] tab-ai.png
+  click test AI connection [#btn-ai-test] rc=0 :: toast="Model reachable in 87 ms — healthy 99%"
+  click load cached report [#btn-ai-report] rc=0 :: toast="Cached report for real-drone-test — no model call made"
+  click run vision analysis [#btn-ai-run] rc=0 :: toast="real-drone-test analysed by external-ai+grid in 159 ms"
+  click save AI settings [#btn-ai-save] rc=0 :: toast="AI endpoint saved"
+  click test species identification [#btn-ai-id-test] rc=0 :: toast="AI endpoint saved"
+  click save identification config [#btn-ai-id-save] rc=0 :: toast="Species identification endpoint saved"
+  click copy snippet [#btn-ai-copy] rc=0 :: toast="Integration contract copied"
+  [shot] ai-done.png
+
+── TAB sensors ── CONSOLE ERRORS:
+✗ 
+  [shot] tab-sensors.png
+  click refresh live weather [#btn-refresh-wx] rc=0 :: toast="Cannot read properties of null (reading 'toFixed')"
+  weather: ✗ Element not found: #wx-now, #wx-panel, #weather-now. Verify the selector, role, or name is correct and the element exists in the DOM. 
+  click register a sensor (token shown once) [#btn-add-sensor] rc=0 :: toast="Cannot read properties of null (reading 'toFixed')"
+  click copy ingest snippet [#btn-copy-snippet] rc=0 :: toast="Snippet copied to clipboard"
+  devices on newest field: "deviceCount":3 "deviceCount":3 "deviceCount":0 
+  [shot] sensors-done.png
+
+── TAB workflows ── CONSOLE ERRORS:
+✗ 
+✗ 
+✗ 
+  [shot] tab-workflows.png
+  click run imagery-window workflow [#tab-workflows button:has-text("Imagery acquisition")] rc=1 :: toast="Species identification failed: model returned no species information"
+  click fetch Sentinel-1 SAR [#tab-workflows button:has-text("Sentinel-1 SAR")] rc=1 :: toast="Species identification failed: model returned no species information"
+  click fetch terrain + slope [#tab-workflows button:has-text("Terrain + slope")] rc=1 :: toast="Species identification failed: model returned no species information"
+  click weather cross-check [#tab-workflows button:has-text("Weather cross-check")] rc=1 :: toast="Species identification failed: model returned no species information"
+  click refresh run history [#btn-wf-history] rc=0 :: toast="Species identification failed: model returned no species information"
+  history rows: 7
+  [shot] workflows-done.png
+  click clear workflow history [#btn-wf-clear] rc=0 :: toast="Run history cleared for real-drone-test"
+
+── TAB geo ── CONSOLE ERRORS:
+✗ 
+✗ 
+✗ 
+  [shot] tab-geo.png
+  click locate (device geolocation) [#btn-locate] rc=0 :: toast="Location denied: User denied Geolocation"
+  map tiles loaded: 15
+
+── TAB applications ── CONSOLE ERRORS:
+✗ 
+✗ 
+✗ 
+  [shot] tab-applications.png
+  application cards: 8
+
+── FINAL ERROR CHECK ──
+✗ 
+✗ 
+✗ 
+sweep complete: 2026-10-08T18:08:16Z

@@ -1,0 +1,25 @@
+**/node_modules
+**/dist
+**/.vite
+**/__pycache__
+**/*.pyc
+.venv
+venv
+.git
+.gitignore
+.pytest_cache
+.ipynb_checkpoints
+
+# Never bake local data or generated analysis output into the image
+data/raw/*
+data/processed/*
+outputs/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!outputs/.gitkeep
+
+.env
+*.log
+.DS_Store
+README.md
+notebooks

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "outputDirectory": "crop-ai/public",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "crop-ai/{public,data}/**"
+    }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api" }
+  ]
+}

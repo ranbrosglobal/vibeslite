@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Vibes Lite — simple field health for farmers: see how your crop is growing and how well your soil is protected."
+    />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f1f0e8" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Vibes Lite" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <title>Vibes Lite · Agriculture Intelligence</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Leaflet's stylesheet is bundled from node_modules (see src/main.jsx),
+         so the map needs no third-party stylesheet at runtime. -->
+  </head>
+  <body>
+    <a class="skip-link btn" href="#main-content">Skip to content</a>
+    <div id="root"></div>
+    <noscript>
+      <p style="padding: 24px; text-align: center; font-family: sans-serif">
+        This dashboard needs JavaScript — the analysis forms, maps and charts all run in the browser.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

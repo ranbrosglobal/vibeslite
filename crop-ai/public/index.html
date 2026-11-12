@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Vibes Lite · Crop AI — Field Analysis Console</title>
+  <meta name="description" content="Vibes Lite Crop AI — drone and phone imagery turned into field intelligence: tile classification, georeferenced agronomy layers, live weather, device sensor ingest and satellite fusion." />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#07080a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Vibes Lite" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Leaflet is served from this app, not a CDN: the map must work on a field
+       laptop with a restrictive network, and the CSP then needs no external
+       script origin. See vendor/leaflet/README.md (Leaflet 1.9.4, BSD-2-Clause). -->
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="aoi.css" />
+</head>
+<body>
+  <a class="skip-link btn" href="#main">Skip to content</a>
+  <div class="shell">
+
+    <!-- ══════════════════════════ SIDEBAR ══════════════════════════ -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="mark-wrap">
+          <svg class="mark" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zm0 7L2 14l10 5 10-5-10-5z" fill="currentColor"/></svg>
+        </div>
+        <div class="brand-txt">
+          <h1>Vibes Lite</h1>
+          <p>Crop Intelligence</p>
+        </div>
+      </div>
+
+      <nav class="nav" id="tabs" aria-label="Console sections">
+        <span class="nav-glider" aria-hidden="true"></span>
+        <button data-tab="ops" class="on">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M19 5h-3V3h-2v2h-4V3H8v2H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2zm0 14H5V9h14zm-7-2l4-4h-3V8h-2v5H9z" fill="currentColor"/></svg>
+          <span>Operations</span>
+        </button>
+        <button data-tab="label">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M17.6 9.5l-6-6A2 2 0 0010.2 3H5a2 2 0 00-2 2v5.2c0 .5.2 1 .6 1.4l6 6a2 2 0 002.8 0l5.2-5.2a2 2 0 000-2.9zM7.5 9A1.5 1.5 0 116 7.5 1.5 1.5 0 017.5 9z" fill="currentColor"/></svg>
+          <span>Labeling</span>
+        </button>
+        <button data-tab="lab">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 15h-2v-2h2zm0-4h-2V7h2z" fill="currentColor"/></svg>
+          <span>Model Lab</span>
+        </button>
+        <button data-tab="ai">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 2a2 2 0 00-2 2v1.1A7 7 0 005 10v1H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2v-6a2 2 0 00-2-2h-1v-1a7 7 0 00-5-4.9V4a2 2 0 00-2-2zM8 21v-4a4 4 0 018 0v4zm11 0h-1v-4a6 6 0 00-12 0v4H5v-6h14z" fill="currentColor"/></svg>
+          <span>AI Model</span>
+        </button>
+        <button data-tab="analysis">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M5 21V9h4v12zm5 0V3h4v18zm5 0v-7h4v7z" fill="currentColor"/></svg>
+          <span>Analysis</span>
+        </button>
+        <button data-tab="geo">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" fill="currentColor"/></svg>
+          <span>Geo Map</span>
+        </button>
+        <button data-tab="sensors">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M13 3a9 9 0 00-9 9H1l4 4 4-4H6a7 7 0 117 7v2a9 9 0 000-18z" fill="currentColor"/></svg>
+          <span>Sensors</span>
+        </button>
+        <button data-tab="workflows">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M3 5h10v2H3zm0 6h7v2H3zm0 6h10v2H3zM15 7l5 3-5 3z" fill="currentColor"/></svg>
+          <span>Workflows</span>
+        </button>
+        <button data-tab="applications">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.6 6.5 19.5l1-6.3L3 8.9 9 8z" fill="currentColor"/></svg>
+          <span>Applications</span>
+        </button>
+      </nav>
+
+      <div class="side-foot">
+        <div class="stat" id="st-sse"><i class="pulse-dot"></i><span>LINK —</span></div>
+        <div class="stat" id="st-opencv"><svg viewBox="0 0 24 24" width="11" height="11"><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zM12 17a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z" fill="currentColor"/></svg><span>CV —</span></div>
+        <div class="stat" id="st-geo"><svg viewBox="0 0 24 24" width="11" height="11"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" fill="currentColor"/></svg><span>GEO —</span></div>
+        <div class="stat" id="st-model"><svg viewBox="0 0 24 24" width="11" height="11"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z" fill="currentColor"/></svg><span>MODEL —</span></div>
+      </div>
+    </aside>
+
+    <!-- ══════════════════════════ MAIN ══════════════════════════ -->
+    <div class="main-col">
+      <header class="topbar">
+        <div class="hero">
+          <h1>Field Analysis Console</h1>
+          <p id="sysline">Initializing</p>
+        </div>
+        <div class="kpis" role="group" aria-label="Fleet totals">
+          <div class="kpi"><b id="kpi-fields">0</b><span>Fields</span></div>
+          <div class="kpi"><b id="kpi-samples">0</b><span>Samples</span></div>
+          <div class="kpi"><b id="kpi-models">0</b><span>Models</span></div>
+          <div class="kpi"><b id="kpi-geo">0</b><span>Georef</span></div>
+        </div>
+      </header>
+
+      <main id="main">
+        <!-- ───────────────────────── OPERATIONS ───────────────────────── -->
+        <section class="tab on" id="tab-ops">
+          <div class="grid ops-grid">
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M19 5h-3V3h-2v2h-4V3H8v2H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2zm0 14H5V9h14zm-7-2l4-4h-3V8h-2v5H9z" fill="currentColor"/></svg></div>
+                <div>
+                  <h2>Ingest Imagery</h2>
+                  <p class="card-sub">Drone orthophoto or field photo · PNG / JPG · EXIF GPS extracted automatically</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <label class="btn primary" for="file-input"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M19 15v2H5v-2H3v4h18v-4zM6 11l1.4 1.4L11 8.8V16h2V8.8l3.6 3.6L18 11l-6-6z" fill="currentColor"/></svg> Upload image</label>
+                  <input type="file" id="file-input" accept="image/png,image/jpeg" hidden />
+                  <button id="btn-camera" class="btn"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M17 10.5V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11zM12 15a3 3 0 110-6 3 3 0 010 6z" fill="currentColor"/></svg> Camera</button>
+                </div>
+                <p class="note">Images without GPS can be geotagged later in Analysis.</p>
+                <div class="row up-progress" id="upload-progress" hidden><div class="progress"><div id="upload-bar"></div></div><span id="upload-label" class="mono"></span></div>
+              </div>
+            </div>
+
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M13 3a9 9 0 00-9 9H1l4 4 4-4H6a7 7 0 117 7v2a9 9 0 000-18z" fill="currentColor"/></svg></div>
+                <div><h2>Pipeline</h2><p class="card-sub">Live system state</p></div>
+              </div>
+              <div class="card-body">
+                <div class="klist" id="pipeline-klist"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-h">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M4 4h16v2H4zm0 5h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" fill="currentColor"/></svg></div>
+              <div>
+                <h2>Field Registry</h2>
+                <p class="card-sub">Every ingested image, its georeference and composition</p>
+              </div>
+              <span class="feed-pill" id="sse-pill"><i class="pulse-dot"></i> Live</span>
+            </div>
+            <div class="card-body table-wrap">
+              <table class="data-table" id="fields-table">
+                <thead><tr><th>ID</th><th>Source</th><th>Georeference</th><th>Grid</th><th>Status</th><th class="num">Healthy</th><th class="num">Stress</th><th class="num">Soil</th><th class="num">Weed</th><th></th></tr></thead>
+                <tbody></tbody>
+              </table>
+              <div class="empty-state" id="fields-empty" hidden>
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M17 8C8 10 5.9 16.2 3.8 21.3l1.9.7.9-2.3c.5.2 1 .3 1.4.3C19 20.2 22 3 22 3c0 0-5 2-9 4C9 9 7 11 7 11s2 .5 2.5 1.5C8 13 6.5 15 6.5 15s1.5-.5 2.5-1c0 0 .5 1 1.5 1C14 15 17 8 17 8z" fill="currentColor"/></svg>
+                <b>No fields yet</b>
+                <span>Ingest a drone or camera image to begin the pipeline.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ───────────────────────── LABELING ───────────────────────── -->
+        <section class="tab" id="tab-label">
+          <div class="grid label-grid">
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M4 4h7v7H4zm9 0h7v7h-7zM4 13h7v7H4zm9 0h7v7h-7z" fill="currentColor"/></svg></div>
+                <div>
+                  <h2>Tile Labeling</h2>
+                  <p class="card-sub">Click a tile, then a class · honest metrics depend on your labels</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <select id="field-select"><option value="">— no fields —</option></select>
+                  <span class="mono dim" id="label-progress"></span>
+                </div>
+                <div class="canvas-wrap"><canvas id="tile-canvas" width="640" height="640"></canvas></div>
+              </div>
+            </div>
+
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M17.6 9.5l-6-6A2 2 0 0010.2 3H5a2 2 0 00-2 2v5.2c0 .5.2 1 .6 1.4l6 6a2 2 0 002.8 0l5.2-5.2a2 2 0 000-2.9zM7.5 9A1.5 1.5 0 116 7.5 1.5 1.5 0 017.5 9z" fill="currentColor"/></svg></div>
+                <div><h2>Classes</h2><p class="card-sub">Ground-truth categories</p></div>
+              </div>
+              <div class="card-body">
+                <div class="class-list" id="class-list">
+                  <button class="cls on" data-class="healthy"><i style="background:#4CAF50"></i><b>Healthy crop</b><code>HEALTHY</code></button>
+                  <button class="cls" data-class="stressed"><i style="background:#FFC107"></i><b>Stressed crop</b><code>STRESSED</code></button>
+                  <button class="cls" data-class="soil"><i style="background:#795548"></i><b>Bare soil</b><code>SOIL</code></button>
+                  <button class="cls" data-class="weed"><i style="background:#2E9E5B"></i><b>Weed area</b><code>WEED</code></button>
+                </div>
+
+                <div class="divider"></div>
+                <div class="card-h tight">
+                  <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M8 3v2H5a2 2 0 00-2 2v3h18V7a2 2 0 00-2-2h-3V3h-2v2H10V3zm-5 9v7a2 2 0 002 2h14a2 2 0 002-2v-7z" fill="currentColor"/></svg></div>
+                  <div><h2>Dataset</h2></div>
+                </div>
+                <div class="klist" id="dataset-klist"></div>
+                <div class="row">
+                  <button id="btn-from-labels" class="btn"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M19 12l-5-5v3H9v4h5v3zM5 5h9V3H5a2 2 0 00-2 2v14a2 2 0 002 2h9v-2H5z" fill="currentColor"/></svg> Add labeled tiles</button>
+                </div>
+
+                <div class="divider"></div>
+                <div class="card-h tight">
+                  <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 15h-2v-2h2zm0-4h-2V7h2z" fill="currentColor"/></svg></div>
+                  <div><h2>Train</h2></div>
+                </div>
+                <p class="note">Cosine kNN (k=5) on 13-dim tile features · 5-fold cross-validation reports out-of-sample accuracy, per-class precision / recall / F1 and the confusion matrix.</p>
+                <button id="btn-train" class="btn primary wide"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M8 5v14l11-7z" fill="currentColor"/></svg> Train &amp; cross-validate</button>
+                <div id="train-result" class="mono small"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ───────────────────────── MODEL LAB ───────────────────────── -->
+        <section class="tab" id="tab-lab">
+          <div class="card reveal">
+            <div class="card-h">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z" fill="currentColor"/></svg></div>
+              <div><h2>Models</h2><p class="card-sub">Every trained model, persisted on disk</p></div>
+            </div>
+            <div class="card-body"><div id="models-list"></div></div>
+          </div>
+
+          <div class="card reveal" id="metrics-card" hidden>
+            <div class="card-h">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 21V9h4v12zm5 0V3h4v18zm5 0v-7h4v7z" fill="currentColor"/></svg></div>
+              <div><h2>Cross-validation metrics</h2><p class="card-sub">Out-of-sample performance, 5-fold</p></div>
+              <span class="chip mono" id="metrics-model"></span>
+            </div>
+            <div class="card-body">
+              <div class="grid metrics-grid">
+                <div><h3>Overall</h3><div class="klist" id="metrics-overall"></div></div>
+                <div><h3>Per class</h3><div class="table-wrap"><table class="data-table" id="metrics-table"><thead><tr><th>Class</th><th class="num">P</th><th class="num">R</th><th class="num">F1</th><th class="num">N</th></tr></thead><tbody></tbody></table></div></div>
+                <div><h3>Confusion matrix <span class="dim">· rows = truth</span></h3><table class="data-table cm" id="cm-table"></table></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-h">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M21 17V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2zm-11-5l2.5 3 3.5-4.5L20 17H4z" fill="currentColor"/></svg></div>
+              <div><h2>Quick classify — unseen tile</h2><p class="card-sub">Load any small crop image; the active model classifies it</p></div>
+            </div>
+            <div class="card-body">
+              <div class="row"><label class="btn" for="tile-file"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M19 15v2H5v-2H3v4h18v-4zM6 11l1.4 1.4L11 8.8V16h2V8.8l3.6 3.6L18 11l-6-6z" fill="currentColor"/></svg> Load tile</label><input type="file" id="tile-file" accept="image/png,image/jpeg" hidden /><span id="tile-result" class="mono"></span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ───────────────────────── ANALYSIS ───────────────────────── -->
+        <section class="tab" id="tab-analysis">
+          <div class="row toolbar">
+            <select id="analysis-field"></select>
+            <button id="btn-predict" class="btn primary"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M8 5v14l11-7z" fill="currentColor"/></svg> Analyze field</button>
+            <button id="btn-geotag-show" class="btn"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" fill="currentColor"/></svg> Geotag</button>
+            <button id="btn-geojson" class="btn"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M5 20h14v-2H5zM19 9h-4V3H9v6H5l7 7z" fill="currentColor"/></svg> GeoJSON</button>
+            <button id="btn-delete" class="btn danger"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z" fill="currentColor"/></svg> Delete</button>
+          </div>
+
+          <div class="card reveal" id="geotag-box" hidden>
+            <div class="card-h">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" fill="currentColor"/></svg></div>
+              <div><h2>Georeference field</h2><p class="card-sub">Required for the satellite map, live weather and metric footprint · WGS84 center coordinates</p></div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <input id="geo-lat" type="number" step="0.000001" placeholder="latitude" />
+                <input id="geo-lon" type="number" step="0.000001" placeholder="longitude" />
+                <input id="geo-width" type="number" step="1" placeholder="width (m)" style="max-width:120px" />
+                <button id="btn-geotag" class="btn primary">Save</button>
+                <button id="btn-geo-gps" class="btn">Device GPS</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid analysis-grid">
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M21 17V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2zM4 15l4-5 3 3.5L14 9l6 8z" fill="currentColor"/></svg></div>
+                <div><h2>Source image</h2></div>
+              </div>
+              <div class="card-body"><img id="img-original" class="fig" alt="source" /></div>
+            </div>
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.6 6.5 19.5l1-6.3L3 8.9 9 8z" fill="currentColor"/></svg></div>
+                <div><h2>Classification overlay</h2></div>
+              </div>
+              <div class="card-body"><img id="img-overlay" class="fig" alt="overlay" /></div>
+            </div>
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 21V9h4v12zm5 0V3h4v18zm5 0v-7h4v7z" fill="currentColor"/></svg></div>
+                <div><h2>Composition &amp; advisory</h2></div>
+              </div>
+              <div class="card-body">
+                <div id="dist"></div>
+                <div class="divider"></div>
+                <div id="irrigation"></div>
+                <div id="exif-info" class="mono small dim exif"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ───────────────────────── GEO MAP ───────────────────────── -->
+        <section class="tab" id="tab-geo">
+          <div class="row toolbar wrap">
+            <select id="geo-field"></select>
+            <button id="btn-locate" class="btn"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 3h-3.07A7 7 0 0011 4.07V1h2v3.07A7 7 0 0017.93 11H21v2h-3.07A7 7 0 0113 19.93V23h-2v-3.07A7 7 0 014.07 13H1v-2h3.07A7 7 0 0011 4.07V1h2v3.07A7 7 0 0119.93 11H21z" fill="currentColor"/></svg> Use my location</button>
+            <select id="basemap">
+              <option value="osm">OSM Street</option>
+              <option value="hot">OSM Humanitarian</option>
+              <option value="topo">OSM Terrain</option>
+              <option value="esri">Esri World Imagery</option>
+              <option value="google">Google Satellite</option>
+              <option value="hybrid">Google Hybrid</option>
+            </select>
+            <label class="chk"><input type="checkbox" id="chk-tiles" checked /> Tile polygons</label>
+            <label class="chk"><input type="checkbox" id="chk-devices" checked /> Sensor markers</label>
+            <label class="chk"><input type="checkbox" id="chk-weather" checked /> Weather &amp; wind</label>
+            <label class="chk"><input type="checkbox" id="chk-osm" /> OSM features</label>
+            <span class="spacer"></span>
+            <span class="chip" id="geo-gps-chip">no location</span>
+          </div>
+
+          <!-- ═══════════════ My location — the device's own fix ═══════════════
+               The console reports on real coordinates, and the truest one it
+               can have is where this device actually is. The fix comes from
+               navigator.geolocation, is validated and stored by the server, and
+               every provider below is then asked for THAT point.
+
+               Nothing here falls back to a sample coordinate. Denied, absent
+               hardware, no secure context, a timeout - each is named for what
+               it is, because a plausible-looking number for the wrong place
+               would be worse than an honest "I do not know where you are". -->
+          <div class="card reveal loc-card" id="loc-card">
+            <div class="card-h spread">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2a7 7 0 00-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1114.5 9 2.5 2.5 0 0112 11.5z" fill="currentColor"/></svg></div>
+              <div><h2>My location</h2><p class="card-sub">Your device's own fix — live weather, archived rainfall, satellite passes and terrain for where you actually are</p></div>
+              <span class="chip" id="loc-chip">unknown</span>
+            </div>
+            <div class="row wrap loc-actions">
+              <button class="btn primary" id="btn-loc-use">Use my device location</button>
+              <button class="btn" id="btn-loc-follow" aria-pressed="false">Follow</button>
+              <button class="btn" id="btn-loc-refresh">Refresh live data</button>
+              <button class="btn danger" id="btn-loc-forget">Forget</button>
+            </div>
+            <p class="loc-status" id="loc-status" role="status" aria-live="polite"></p>
+            <div class="card-body" id="loc-body"><span class="dim">No fix yet. Press <b>Use my device location</b> — the browser will ask permission, and the console will then pull live data for your real coordinates.</span></div>
+            <p class="note" id="loc-note"></p>
+          </div>
+
+          <div class="card reveal osm-bar">
+            <form class="osm-search" id="osm-search" role="search">
+              <input id="osm-q" type="search" placeholder="Search a place, address or postcode (OpenStreetMap)" aria-label="Search OpenStreetMap for a place" autocomplete="off" />
+              <button class="btn sm primary" type="submit">Search</button>
+              <button class="btn sm" type="button" id="osm-clear">clear</button>
+            </form>
+            <div class="osm-results" id="osm-results" hidden></div>
+          </div>
+
+          <div class="geo-layout">
+            <div class="card reveal map-card">
+              <div class="card-h spread">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M20.5 3l-.2 0-5.3 2.1-6-2.1L3.4 5c-.3.1-.4.3-.4.6v15c0 .5.5.9 1 .8l5.3-2.1 6 2.1 5.6-2.2c.3-.1.5-.4.5-.7V3.9c0-.5-.5-.9-.9-.9zM15 19l-6-2.1V5l6 2.1z" fill="currentColor"/></svg></div>
+                <div><h2>Geo map — agronomy layers</h2><p class="card-sub">Vegetation, plant health, weed pressure, soil condition and live probe readings, drawn over real coordinates</p></div>
+              </div>
+              <div class="layer-bar" id="geo-layers"></div>
+              <div class="layer-bar" id="osm-kinds"></div>
+              <div class="map-holder"><div id="map"></div></div>
+              <div class="pick-panel" id="osm-pick" hidden></div>
+              <p class="note" id="osm-note"></p>
+              <p class="note" id="map-note"></p>
+              <p class="credit" id="osm-credit"></p>
+            </div>
+
+            <div class="geo-side">
+              <div class="card reveal">
+                <div class="card-h">
+                  <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 10.6l4 2.3-.8 1.4-5.2-3V6h2z" fill="currentColor"/></svg></div>
+                  <div><h2>Site conditions</h2><p class="card-sub">Live weather from the field's own coordinates</p></div>
+                </div>
+                <div class="card-body" id="geo-wx"><span class="dim">Select a georeferenced field.</span></div>
+              </div>
+
+              <div class="card reveal">
+                <div class="card-h">
+                  <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M6.8 6.5c0 .8.6 1.5 1.5 1.5h.4L6 21h2.1l1.4-6h4.9l1.4 6H18l-2.7-13h.4c.8 0 1.5-.7 1.5-1.5V3H6.8zM12 13c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z" fill="currentColor"/></svg></div>
+                  <div><h2>Soil &amp; vegetation</h2><p class="card-sub">Quality score, plant health, weed load, irrigation</p></div>
+                </div>
+                <div class="card-body" id="geo-soil"><span class="dim">Select a field.</span></div>
+              </div>
+
+              <div class="card reveal">
+                <div class="card-h">
+                  <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M3 13h2v6H3zm4-4h2v10H7zm4-4h2v14h-2zm4 6h2v8h-2zm4-9h2v17h-2z" fill="currentColor"/></svg></div>
+                  <div><h2>Sensors on this site</h2><p class="card-sub">Every deployed probe and its latest value</p></div>
+                  <span class="chip" id="geo-dev-count">0</span>
+                </div>
+                <div class="card-body" id="geo-devices"><span class="dim">No site selected.</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Windy: its own forecast map. Windy publishes no archive at all
+               ("It is not possible to retrieve historical forecasts with past
+               data"), so this panel is deliberately live-only and labelled as
+               such - every number the console shows still comes from the
+               reanalysis archive, which reaches 1940. The clickable Windy
+               credit is required by Windy's embed terms and is never hidden. -->
+          <div class="card reveal windy-card">
+            <div class="card-h spread">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M3.5 9h7.2a2.3 2.3 0 10-2.2-3l-1.8-.6A4.1 4.1 0 1112.9 11H9.6v3.5h3.3a2.3 2.3 0 11-2.2 3l-1.8.6A4.1 4.1 0 1012.9 11H9.6V9H3.5zm0 2H6v2H3.5z" fill="currentColor"/></svg></div>
+              <div><h2>Windy forecast map</h2><p class="card-sub">Windy's own wind, rain and temperature layers over this field · live forecast only, no archive</p></div>
+              <span class="chip" id="windy-chip">Windy</span>
+            </div>
+            <div class="layer-bar" id="windy-overlays"></div>
+            <div class="windy-holder">
+              <div class="empty-state" id="windy-empty">
+                <b>No map yet</b>
+                <span>Select a georeferenced field and the Windy map opens at its coordinates. Windy draws live forecast layers only — for a past date use the weather history.</span>
+              </div>
+              <!-- No sandbox attribute on purpose. Chrome warns that a sandbox
+                   carrying BOTH allow-scripts and allow-same-origin "can escape
+                   its sandboxing", so it buys no real confinement here - and
+                   Windy's own embed needs its origin's storage to run at all,
+                   so dropping allow-same-origin would break the map instead.
+                   The real control is the CSP's frame-src allowlist: exactly
+                   one framing origin, and no script or style from it. -->
+              <iframe id="windy-frame" title="Windy forecast map for the selected field" hidden loading="lazy" referrerpolicy="no-referrer"></iframe>
+            </div>
+            <p class="note" id="windy-note"></p>
+            <p class="credit" id="windy-credit"></p>
+          </div>
+        </section>
+
+        <!-- ───────────────────────── SENSORS ───────────────────────── -->
+        <section class="tab" id="tab-sensors">
+          <div class="row toolbar wrap">
+            <select id="sensor-field"></select>
+            <button id="btn-refresh-wx" class="btn"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M17.65 6.35A8 8 0 106 18.36l1.4-1.42A6 6 0 1117.9 7.7L15 11h7V4z" fill="currentColor"/></svg> Refresh weather</button>
+            <span class="spacer"></span>
+            <span class="chip" id="sensor-chip">0 sensors</span>
+          </div>
+
+          <div class="grid sensor-grid2">
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 15h-2v-2h2zm0-4h-2V7h2z" fill="currentColor"/></svg></div>
+                <div><h2>Register a sensor</h2><p class="card-sub">Install a probe on a site; it gets its own id, ingest token and independent history</p></div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <input id="dev-name" type="text" placeholder="Sensor name (e.g. North probe)" style="flex:1;min-width:190px" />
+                  <select id="dev-type" style="max-width:190px"></select>
+                </div>
+                <div class="row">
+                  <label class="mini-lab">tile row<input id="dev-r" type="number" min="0" placeholder="r" /></label>
+                  <label class="mini-lab">tile col<input id="dev-c" type="number" min="0" placeholder="c" /></label>
+                  <button id="btn-add-sensor" class="btn primary">Add sensor</button>
+                  <span class="note" style="margin:0" id="dev-grid-note"></span>
+                </div>
+                <p class="note" id="dev-type-note" style="margin:8px 0 0"></p>
+                <div id="dev-created"></div>
+              </div>
+            </div>
+
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 14H4V8l8 5 8-5z" fill="currentColor"/></svg></div>
+                <div><h2>Ingest endpoint</h2><p class="card-sub">ESP32 · Arduino · Raspberry Pi · phone</p></div>
+              </div>
+              <div class="card-body">
+                <pre class="code" id="ingest-snippet"></pre>
+                <div class="row">
+                  <button id="btn-copy-snippet" class="btn">Copy</button>
+                  <span class="note">Keys: soilMoisture % · temperatureC · humidityPct · ph · ec · rainMm · soilTempC · windKmh · lightLux · battery</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-h spread">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1114.5 9 2.5 2.5 0 0112 11.5z" fill="currentColor"/></svg></div>
+              <div><h2>Sites &amp; deployed sensors</h2><p class="card-sub">Which sensors sit at which site, and what each one is fetching right now</p></div>
+              <div class="row tight-row"><select id="site-filter"><option value="">All sites</option></select></div>
+            </div>
+            <div class="card-body" id="site-list"></div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-h">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M3 13h2v6H3zm4-4h2v10H7zm4-4h2v14h-2zm4 6h2v8h-2zm4-9h2v17h-2z" fill="currentColor"/></svg></div>
+              <div><h2>Reading history</h2><p class="card-sub" id="readings-sub">Last 12 readings from the newest sensor on the selected site</p></div>
+            </div>
+            <div class="card-body table-wrap"><table class="data-table" id="readings-table"><thead></thead><tbody></tbody></table></div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-h">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M3 13h2v6H3zm4-4h2v10H7zm4-4h2v14h-2zm4 6h2v8h-2zm4-9h2v17h-2z" fill="currentColor"/></svg></div>
+              <div><h2>Activity feed</h2><p class="card-sub">Realtime events over SSE</p></div>
+            </div>
+            <div class="card-body"><div class="activity" id="activity-feed"><div class="act-empty">Listening for events…</div></div></div>
+          </div>
+        </section>
+
+        <!-- ───────────────────────── AI MODEL (EXTERNAL) ───────────────────────── -->
+        <section class="tab" id="tab-ai">
+          <div class="row toolbar">
+            <select id="ai-field"></select>
+            <button id="btn-ai-run" class="btn primary"><svg viewBox="0 0 24 24" width="13" height="13"><path d="M12 2a2 2 0 00-2 2v1.1A7 7 0 005 10v1H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2v-6a2 2 0 00-2-2h-1v-1a7 7 0 00-5-4.9V4a2 2 0 00-2-2z" fill="currentColor"/></svg> Run AI analysis</button>
+            <button id="btn-ai-report" class="btn">Cached report</button>
+            <span id="ai-source-badge" class="chip">—</span>
+          </div>
+
+          <div class="grid ai-grid">
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M13 2L4.1 12.7a1 1 0 00.8 1.6H11l-1 7.7 8.9-10.7a1 1 0 00-.8-1.6H12z" fill="currentColor"/></svg></div>
+                <div>
+                  <h2>External model endpoint</h2>
+                  <p class="card-sub">Your model runs anywhere reachable over HTTP &mdash; point this at it and the console calls it for every analysis</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <select id="ai-provider" style="max-width:150px">
+                    <option value="disabled">Disabled</option>
+                    <option value="generic">Generic JSON</option>
+                    <option value="openai">OpenAI-compatible</option>
+                  </select>
+                  <input id="ai-baseurl" type="text" placeholder="http://gpu-box.local:8000/predict" style="flex:1;min-width:240px" />
+                </div>
+                <div class="row">
+                  <input id="ai-model" type="text" placeholder="model name (optional)" style="flex:1;min-width:180px" />
+                  <input id="ai-key" type="text" placeholder="API key (optional)" style="flex:1;min-width:180px" />
+                  <input id="ai-timeout" type="number" placeholder="timeout ms" style="max-width:120px" />
+                  <button id="btn-ai-save" class="btn primary">Save</button>
+                  <button id="btn-ai-test" class="btn">Test connection</button>
+                </div>
+                <p class="note" id="ai-status-note">&mdash;</p>
+                <div class="divider"></div>
+                <div id="ai-runtime"></div>
+
+                <div class="divider"></div>
+                <div class="row">
+                  <b>Species identification endpoint</b>
+                  <span id="ai-id-chip" class="chip">&mdash;</span>
+                </div>
+                <p class="note" style="margin:0 0 8px">A separate model for naming species from camera frames and map tiles. Leave the URL empty to reuse the endpoint above.</p>
+                <div class="row">
+                  <select id="ai-id-provider" style="max-width:160px">
+                    <option value="openai">OpenAI-compatible</option>
+                    <option value="generic">Generic JSON</option>
+                    <option value="disabled">Disabled</option>
+                  </select>
+                  <input id="ai-id-baseurl" type="text" placeholder="http://localhost:11434/v1" style="flex:1;min-width:240px" />
+                </div>
+                <div class="row">
+                  <input id="ai-id-model" type="text" placeholder="model name (e.g. qwen2.5vl:3b)" style="flex:1;min-width:180px" />
+                  <input id="ai-id-timeout" type="number" placeholder="timeout ms" style="max-width:120px" />
+                  <button id="btn-ai-id-save" class="btn primary">Save</button>
+                  <button id="btn-ai-id-test" class="btn">Test identification</button>
+                </div>
+                <p class="note" id="ai-id-note">&mdash;</p>
+              </div>
+            </div>
+
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 15h-2v-2h2zm0-4h-2V7h2z" fill="currentColor"/></svg></div>
+                <div>
+                  <h2>AI agronomy report</h2>
+                  <p class="card-sub">Plant detection, plant area, health, weed area and soil quality for the selected field</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="ai-scores"></div>
+                <div class="divider"></div>
+                <div id="ai-areas"></div>
+                <div class="divider"></div>
+                <div id="ai-alerts"></div>
+              </div>
+            </div>
+
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6a2.5 2.5 0 010 5.5z" fill="currentColor"/></svg></div>
+                <div>
+                  <h2>Species identification</h2>
+                  <p class="card-sub">Every entry is a real model call from a camera frame or map tile, stored with time, place and confidence</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="identify-history"><span class="dim">No identifications yet — open the camera and press Identify plant, or use Identify here on a map tile.</span></div>
+              </div>
+            </div>
+
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M9 7h6v2H9zm0 4h6v2H9zm0 4h4v2H9zM5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" fill="currentColor"/></svg></div>
+                <div>
+                  <h2>Integration contract</h2>
+                  <p class="card-sub">What the console sends, and every response key it accepts</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <pre id="ai-contract" class="code mono"></pre>
+                <div class="divider"></div>
+                <p class="note" style="margin:0 0 6px"><b>SPECIES IDENTIFICATION</b> — POST to the identify endpoint (defaults to the one above):</p>
+                <pre id="ai-id-contract" class="code mono"></pre>
+                <div class="row">
+                  <button id="btn-ai-copy" class="btn sm">Copy contract</button>
+                  <span class="note" style="margin:0">Environment overrides: <code class="mono">AI_PROVIDER</code>, <code class="mono">AI_API_URL</code>, <code class="mono">AI_API_KEY</code>, <code class="mono">AI_MODEL</code>, <code class="mono">AI_TIMEOUT_MS</code></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ───────────────────────── APPLICATIONS ───────────────────────── -->
+        <!-- ────────────────────── WORKFLOWS (CP9 SOURCES + CP10 DAG) ────────────────────── -->
+        <section class="tab" id="tab-workflows">
+          <div class="row toolbar">
+            <select id="wf-field"></select>
+            <button id="btn-wf-history" class="btn">Run history</button>
+            <button id="btn-wf-clear" class="btn ghost">Clear history</button>
+            <span id="wf-chip" class="chip">&mdash;</span>
+          </div>
+
+          <div class="grid">
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M3 5h10v2H3zm0 6h7v2H3zm0 6h10v2H3zM15 7l5 3-5 3z" fill="currentColor"/></svg></div>
+                <div>
+                  <h2>Workflow DAG</h2>
+                  <p class="card-sub">Nodes fetch, merge and infer. Every result is cached by an input hash, so only the nodes whose inputs actually changed re-run.</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="wf-list"><span class="dim">Loading workflows &hellip;</span></div>
+                <div class="divider"></div>
+                <div id="wf-out"><span class="dim">Press Run on a workflow to execute it for the selected field.</span></div>
+              </div>
+            </div>
+
+            <div class="card reveal">
+              <div class="card-h">
+                <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" fill="currentColor"/></svg></div>
+                <div>
+                  <h2>Fusion data sources</h2>
+                  <p class="card-sub">Real public datasets, fetched on demand for the selected field. Every value carries the product and attribution it came from.</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row" id="wf-fetch-btns">
+                  <button class="btn" data-fetch="sentinel-2-l2a">Sentinel-2 scenes</button>
+                  <button class="btn" data-fetch="sentinel-1-grd">Sentinel-1 SAR</button>
+                  <button class="btn" data-fetch="terrain">Terrain + slope</button>
+                  <button class="btn" data-fetch="crosscheck">Weather cross-check</button>
+                </div>
+                <div id="wf-fetch-out"><span class="dim">No fetch yet.</span></div>
+                <div class="divider"></div>
+                <div id="src-table"><span class="dim">Loading source registry &hellip;</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-h">
+              <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M3 13h2v6H3zm4-4h2v10H7zm4-4h2v14h-2zm4 6h2v8h-2zm4-9h2v17h-2z" fill="currentColor"/></svg></div>
+              <div>
+                <h2>Run history</h2>
+                <p class="card-sub">Versioned derived products — what ran, what was reused, and how long it took</p>
+              </div>
+            </div>
+            <div class="card-body"><div id="wf-runs"><span class="dim">No runs yet.</span></div></div>
+          </div>
+        </section>
+
+        <section class="tab" id="tab-applications">
+          <div class="apps-head reveal">
+            <h2>Built for real field work</h2>
+            <p>One pipeline, many missions — label and train on your own imagery, then apply the model wherever the same four-state view of a field answers a question. The engine is honest: capabilities below are powered by the working 4-class model, live geodata and device feeds already running in this console.</p>
+          </div>
+          <div class="apps-grid" id="apps-grid"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- camera modal -->
+  <div class="modal" id="camera-modal" hidden>
+    <div class="modal-box">
+      <div class="card-h">
+        <div class="card-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M17 10.5V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11zM12 15a3 3 0 110-6 3 3 0 010 6z" fill="currentColor"/></svg></div>
+        <div><h2>Camera capture</h2><p class="card-sub">Capture frame ingests the image like any upload (geolocation attached when permitted). Identify plant asks the vision model what species is in front of the lens.</p></div>
+      </div>
+      <video id="cam-video" autoplay playsinline muted></video>
+      <div id="identify-result" class="id-result" hidden></div>
+      <div class="row">
+        <button id="btn-capture" class="btn primary">Capture frame</button>
+        <button id="btn-identify" class="btn">Identify plant</button>
+        <button id="btn-cam-close" class="btn ghost">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript>
+    <p class="note" style="padding:20px;text-align:center">This console needs JavaScript — the imagery pipeline, tile classifier and map layers all run in the browser.</p>
+  </noscript>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="app.js"></script>
+  <script src="aoi.js"></script>
+  <script src="pwa.js"></script>
+</body>
+</html>

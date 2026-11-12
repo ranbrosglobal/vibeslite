@@ -1,0 +1,11 @@
+node_modules/
+data/*.png
+data/*.jpg
+data/*.jpeg
+data/*.json
+data/*.csv
+data/*.zip
+data/samples/
+data/uploads/
+data/models/
+data/dataset/

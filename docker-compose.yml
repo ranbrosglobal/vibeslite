@@ -1,0 +1,45 @@
+# Vibes Lite - modular monolith: one API container, one dashboard container.
+#
+#   docker compose up --build      backend :8000  ·  dashboard :5173
+#
+# data/ and outputs/ are bind-mounted so uploaded datasets and generated maps
+# live on the host and survive image rebuilds.
+
+services:
+  vibes-lite-backend:
+    build:
+      context: .
+      target: backend
+    image: vibes-lite-backend:0.1.0
+    container_name: vibes-lite-backend
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      VIBES_PROJECT_NAME: ${VIBES_PROJECT_NAME:-Vibes Lite}
+      VIBES_HOST: 0.0.0.0
+      VIBES_PORT: 8000
+      VIBES_RAW_DATA_DIR: data/raw
+      VIBES_PROCESSED_DATA_DIR: data/processed
+      VIBES_OUTPUTS_DIR: outputs
+      VIBES_MAX_UPLOAD_MB: ${VIBES_MAX_UPLOAD_MB:-200}
+      VIBES_CORS_ORIGINS: ${VIBES_CORS_ORIGINS:-*}
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+    restart: unless-stopped
+
+  vibes-lite-frontend:
+    build:
+      context: .
+      target: frontend
+    image: vibes-lite-frontend:0.1.0
+    container_name: vibes-lite-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      # Vite proxies /api and /outputs to the backend container.
+      VITE_API_PROXY_TARGET: http://vibes-lite-backend:8000
+    depends_on:
+      - vibes-lite-backend
+    restart: unless-stopped

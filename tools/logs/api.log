@@ -1,0 +1,14 @@
+INFO:     Started server process [90574]
+INFO:     Waiting for application startup.
+2026-10-13 10:54:38,434 INFO vibes-lite: Vibes Lite 0.1.0 starting - raw=/Users/harshdev/Documents/vibeslite/data/raw outputs=/Users/harshdev/Documents/vibeslite/outputs
+2026-10-13 10:54:38,434 INFO vibes-lite: OpenCV engine: True | visualization: True
+2026-10-13 10:54:38,434 INFO vibes-lite: Security headers active: 10 | rate limiting: on
+2026-10-13 10:54:38,434 WARNING vibes-lite: CORS allows every origin. Fine behind the local Vite proxy; set VIBES_CORS_ORIGINS to your real origin before exposing this API to the internet.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:56615 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-10-13 10:55:35,513 INFO vibes-lite: Vibes Lite API stopped
+INFO:     Application shutdown complete.
+INFO:     Finished server process [90574]

@@ -1,0 +1,61 @@
+console: 200
+collector installed, start errs="[]"
+startup cards: fields=0 tiles/chips=8
+  [shot] pass2-00-dashboard.png
+
+── TAB lab ── errs="[]"
+  model rows: 19
+  click "Metrics" -> toast="" | errs="[]"
+  metrics overall: cv accuracy 0.0% macro f1 — folds 2 samples tested 2 
+
+── TAB workflows ── errs="[]"
+  click "Sentinel-2 scenes" -> toast="Field has no GPS georeference - ingest imagery with EXIF GPS or set a manual geotag first." | errs="[]"
+  click "Sentinel-1 SAR" -> toast="Field has no GPS georeference - ingest imagery with EXIF GPS or set a manual geotag first." | errs="[]"
+  click "Terrain + slope" -> toast="field has no GPS georeference" | errs="[]"
+  click "Weather cross-check" -> toast="field has no GPS georeference" | errs="[]"
+  click "Imagery acquisition window" -> toast="field has no GPS georeference" | errs="[]"
+  history rows: 0
+  [shot] pass2-workflows.png
+  click #btn-wf-history -> toast="field has no GPS georeference" | errs="[]"
+
+── TAB label ── errs="[]"
+  click "Healthy crop" -> toast="field has no GPS georeference" | errs="[]"
+  click "Weed area" -> toast="field has no GPS georeference" | errs="[]"
+  click #btn-from-labels -> toast="Dataset +0 tiles (3 total)" | errs="[]"
+  click #btn-train -> toast="Model trained — CV accuracy 33.3%" | errs="[]"
+  [shot] pass2-label.png
+
+── TAB ai ── errs="[]"
+  click #btn-ai-test -> toast="Model reachable in 166 ms — healthy 99%" | errs="[]"
+  click #btn-ai-run -> toast="F-muzuqqx6 analysed by external-ai+grid in 279 ms" | errs="[]"
+  report keys: ✗ Element not found: #ai-out, #ai-result, #ai-report. Verify the selector, role, or name is correct and the element exists in the DOM. 
+  [shot] pass2-ai.png
+
+── TAB sensors ── errs="[]"
+  click #btn-refresh-wx -> toast="Live weather refreshed - Open-Meteo" | errs="[]"
+  click #btn-add-sensor -> toast="Soil probe registered at F-muzuqqx6" | errs="[]"
+  sites: 5  devices: 9
+  click #btn-copy-snippet -> toast="Snippet copied to clipboard" | errs="[]"
+  [shot] pass2-sensors.png
+
+── TAB analysis ── errs="[]"
+  click #btn-predict -> toast="F-muzuqqx6 analyzed — healthy 100.0%" | errs="[]"
+  click #btn-geotag-show -> toast="F-muzuqqx6 analyzed — healthy 100.0%" | errs="[]"
+  click #btn-geojson -> toast="Field has no geolocation. Geotag it via EXIF, POST /api/fields/:id/geotag, or upload with lat/lon." | errs="[]"
+  distribution: healthy 100.0% stressed 0.0% soil 0.0% weed 0.0% 
+  [shot] pass2-analysis.png
+
+── TAB geo ── errs="[]"
+  click #btn-locate -> toast="Location denied: User denied Geolocation" | errs="[]"
+  map tiles: 15
+  [shot] pass2-geo.png
+
+── TAB applications ── errs="[]"
+  app cards: 8
+
+── TAB ops ── errs="[]"
+  kpis: 4
+
+── ACCUMULATED PAGE ERRORS ──
+"[]"
+sweep2 complete 2026-10-08T18:19:36Z

@@ -1,0 +1,45 @@
+# --- Secrets ----------------------------------------------------------------
+.env
+*.local
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Node / frontend --------------------------------------------------------
+node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Local dev runtime ------------------------------------------------------
+.dev/logs/
+
+# --- Data & generated artifacts --------------------------------------------
+# Keep the folders, ignore the payloads: real imagery is never committed.
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+outputs/*
+!outputs/.gitkeep
+
+# --- Notebooks / OS ---------------------------------------------------------
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- Model dataset ----------------------------------------------------------
+# 1.1 GB of training images: never commit the dataset itself.
+image-dataset/

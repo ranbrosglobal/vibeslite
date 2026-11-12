@@ -1,0 +1,29 @@
+{
+  "id": "/",
+  "name": "Vibes Lite · Crop AI Field Console",
+  "short_name": "Vibes Lite",
+  "description": "Drone and phone imagery turned into field intelligence: tile classification, georeferenced agronomy layers, live weather, device sensor ingest and satellite fusion.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#07080a",
+  "theme_color": "#07080a",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["productivity", "utilities", "business"],
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Operations", "short_name": "Ops", "url": "/#ops", "description": "Ingest imagery and watch the pipeline" },
+    { "name": "Labeling Studio", "short_name": "Label", "url": "/#label", "description": "Label tiles and train the classifier" },
+    { "name": "Geo Map", "short_name": "Map", "url": "/#geo", "description": "Agronomy layers on satellite imagery" },
+    { "name": "Sensors", "short_name": "Sensors", "url": "/#sensors", "description": "Sites, probes and live readings" }
+  ],
+  "prefer_related_applications": false
+}

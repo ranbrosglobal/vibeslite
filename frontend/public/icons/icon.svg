@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Vibes Lite">
+  <rect width="512" height="512" fill="#07080a"/>
+  <rect x="26" y="26" width="460" height="460" fill="none" stroke="#cbff3c" stroke-width="12"/>
+  <path d="M132 118 L256 392 L380 118 L316 118 L256 254 L196 118 Z" fill="#cbff3c"/>
+  <rect x="196" y="410" width="120" height="22" fill="#eaede6"/>
+  <rect x="398" y="398" width="42" height="42" fill="#cbff3c"/>
+</svg>

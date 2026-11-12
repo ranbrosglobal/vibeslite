@@ -1,0 +1,14 @@
+# Keep the Vercel upload limited to what the Crop AI function needs.
+# Leading slashes anchor to the repo root on purpose: crop-ai/data/** MUST be
+# uploaded (it is pulled into the function bundle via functions.includeFiles),
+# so only the Python product's root-level data/ is excluded here.
+/.venv/
+/frontend/
+/backend/
+/tests/
+/notebooks/
+/data/
+/outputs/
+/.pytest_cache/
+/.freebuff/
+/crop-ai/node_modules/

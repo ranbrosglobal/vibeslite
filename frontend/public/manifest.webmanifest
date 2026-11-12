@@ -1,0 +1,27 @@
+{
+  "id": "/",
+  "name": "Vibes Lite · Field Health",
+  "short_name": "Vibes Lite",
+  "description": "Simple field health for farmers: see how your crop is growing and how well your soil is protected.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#f4f6ef",
+  "theme_color": "#f4f6ef",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["productivity", "utilities", "business"],
+  "icons": [
+    { "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Crop health", "short_name": "Crop", "url": "/crop-health", "description": "How evenly the crop is growing" },
+    { "name": "Soil health", "short_name": "Soil", "url": "/soil-health", "description": "Ground cover and soil trend" }
+  ],
+  "prefer_related_applications": false
+}

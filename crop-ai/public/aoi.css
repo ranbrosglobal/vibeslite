@@ -1,0 +1,103 @@
+/* Area analysis card (aoi.js). Uses the console's existing buttons, chips and cards. */
+
+.aoi-card { margin-top: 18px; }
+
+.aoi-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 10px;
+}
+.aoi-tools .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.aoi-soil {
+  margin: 10px 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.aoi-soil summary { cursor: pointer; font-weight: 600; }
+.aoi-soil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  margin: 10px 0 4px;
+}
+.aoi-soil-field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+.aoi-soil-field input {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #c7d4e2;
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+
+.aoi-status { margin: 8px 0; }
+.aoi-status.busy { color: #c6ff3d; }
+.aoi-status.ok { color: #9be36b; }
+.aoi-status.err { color: #ff8a7a; }
+
+.aoi-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.aoi-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+}
+.aoi-stat-k { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.6; }
+.aoi-stat-v { font-size: 16px; font-weight: 600; }
+
+.aoi-weather { font-size: 13px; opacity: 0.85; margin-bottom: 6px; }
+.aoi-h { margin: 16px 0 8px; font-size: 14px; letter-spacing: 0.04em; }
+
+.aoi-finding {
+  border-left: 3px solid rgba(255, 255, 255, 0.25);
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.aoi-finding.sev-high { border-left-color: #ff6b5b; }
+.aoi-finding.sev-medium { border-left-color: #ffc64d; }
+.aoi-finding.sev-low { border-left-color: #6bb6ff; }
+.aoi-finding.sev-info { border-left-color: #8a8f86; }
+.aoi-finding-h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.aoi-badge {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.aoi-action { margin: 6px 0 0; font-size: 13px; }
+.aoi-unknowns { font-size: 13px; opacity: 0.85; padding-left: 18px; }
+
+.aoi-chat { margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 4px; }
+.aoi-log {
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.aoi-msg { max-width: 92%; padding: 8px 10px; border-radius: 6px; font-size: 13px; white-space: pre-line; }
+.aoi-msg.you { align-self: flex-end; background: rgba(198, 255, 61, 0.12); }
+.aoi-msg.bot { align-self: flex-start; background: rgba(255, 255, 255, 0.05); }
+.aoi-msg-mode { font-size: 10px; opacity: 0.55; margin-top: 4px; letter-spacing: 0.04em; }
+.aoi-chat-form { display: flex; gap: 8px; }
+.aoi-chat-form input {
+  flex: 1;
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #c7d4e2;
+  border-radius: 4px;
+  padding: 8px 10px;
+}

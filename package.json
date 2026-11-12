@@ -1,0 +1,27 @@
+{
+  "name": "vibes-lite",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vibes Lite — Agri intelligence. `npm start` boots the Crop AI backend (Express API) and serves the web console from the same process.",
+  "dependencies": {
+    "exifreader": "^4.46.0",
+    "express": "^4.19.2",
+    "jpeg-js": "^0.4.4",
+    "multer": "^2.0.1",
+    "opencv-wasm": "4.3.0-10",
+    "pngjs": "^7.0.0"
+  },
+  "scripts": {
+    "start": "./start.sh",
+    "dev": "./dev.sh",
+    "dev:console": "./start.sh",
+    "dev:api": ".venv/bin/python -m uvicorn main:app --reload --port 8000 --app-dir backend",
+    "dev:web": "npm --prefix frontend run dev",
+    "mock-ai": "./start.sh --mock-ai",
+    "test": "node --test crop-ai/server.test.js",
+    "test:all": "npm test && .venv/bin/python -m pytest tests -q"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
