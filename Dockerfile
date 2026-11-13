@@ -64,8 +64,9 @@ COPY backend/ backend/
 COPY tests/ tests/
 
 # Ship the demo results so a deployed container has something to show in
-# /api/results and /outputs before anyone runs a new analysis.
-COPY outputs/ outputs/
+# /api/results and /outputs before anyone runs a new analysis. They live in
+# demo/ because outputs/ is gitignored and would not exist in a fresh clone.
+COPY demo/outputs/ outputs/
 
 RUN mkdir -p data/raw data/processed outputs
 
