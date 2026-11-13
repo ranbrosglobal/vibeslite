@@ -7,7 +7,7 @@ const NAV = [
   { to: '/crop-health', num: '01', label: 'Crop', full: 'Crop health' },
   { to: '/soil-health', num: '02', label: 'Soil', full: 'Soil health' },
   { to: '/leaf-check', num: '03', label: 'Leaf', full: 'Leaf check' },
-  { to: '/drone-ops', num: '04', label: 'Flight', full: 'Drone operations' },
+  { to: '/drone-ops', num: '04', label: 'Field', full: 'Field autonomy' },
 ]
 
 const SECTIONS = {
@@ -37,11 +37,11 @@ const SECTIONS = {
   },
   '/drone-ops': {
     index: '04',
-    eyebrow: 'Flight ops',
-    title: 'Drone operations',
-    subtitle: 'Three spray aircraft working the weak zones, with a live camera in the field and a readout of every pass.',
-    source: 'Field mesh · 12 Hz',
-    note: 'Simulated mission · 3 aircraft',
+    eyebrow: 'Autonomy',
+    title: 'Field autonomy',
+    subtitle: 'Baseline survey, live sensing, AWS comparison and the robots that act on it — one loop, one view.',
+    source: 'Baseline + 5 s stream',
+    note: 'Simulated field · 6 agents · 4 cameras',
   },
 }
 

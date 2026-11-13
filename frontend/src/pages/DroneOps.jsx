@@ -2,103 +2,126 @@ import { useEffect, useMemo, useState } from 'react'
 import { Badge, Panel } from '../components/Panel'
 import DroneScene, { PIP } from '../components/DroneScene'
 
-const FLEET = [
-  { id: 'D-01', role: 'Weak zones', tint: '#c8f24e' },
-  { id: 'D-02', role: 'North strip', tint: '#7fe3b0' },
-  { id: 'D-03', role: 'East block', tint: '#f2d24e' },
+const DRONES = [
+  { id: 'D-01', role: 'Survey · spray' },
+  { id: 'D-02', role: 'Survey · spray' },
+  { id: 'D-03', role: 'Canopy relief' },
 ]
 
-const LEDGER = [
-  { at: '14:22', zone: 'Patch 04 · 2.6 ha', mix: 'Foliar feed 12 L/ha' },
-  { at: '14:11', zone: 'Patch 07 · 1.9 ha', mix: 'Bio-fungicide 3 L/ha' },
-  { at: '13:58', zone: 'Patch 02 · 3.4 ha', mix: 'Urea 8 % solution' },
-  { at: '13:40', zone: 'Patch 09 · 1.2 ha', mix: 'Micronutrient 2 L/ha' },
+const ROBOTS = [
+  { id: 'R-01', task: 'Irrigating zone 4', state: 'treating' },
+  { id: 'R-02', task: 'En route · 240 m', state: 'moving' },
+  { id: 'R-03', task: 'Foliar feed · zone 7', state: 'moving' },
 ]
 
-function useMissionClock(running) {
+const CAMERAS = [
+  { id: 'C-01', at: 'North-west', value: '0.58' },
+  { id: 'C-02', at: 'North-east', value: '0.63' },
+  { id: 'C-03', at: 'South-east', value: '0.61' },
+  { id: 'C-04', at: 'South-west', value: '0.52' },
+]
+
+const STAGES = [
+  { name: 'Sense', detail: '7 cameras · 12 Hz', ms: '5 s' },
+  { name: 'Ingest', detail: 'AWS IoT core', ms: '12 ms' },
+  { name: 'Compare', detail: 'against baseline', ms: '38 ms' },
+  { name: 'Dispatch', detail: '2 commands out', ms: '9 ms' },
+]
+
+const BASELINE = [
+  ['Surveyed', '13 Oct 2026 · 06:41'],
+  ['Points', '412,880'],
+  ['Area', '208.8 ha'],
+  ['Drift zones', '3 of 11'],
+]
+
+const READOUTS = [
+  { label: 'Soil moisture', value: '−30', unit: '%', tone: 'down' },
+  { label: 'Canopy NDVI', value: '0.61', unit: '', tone: '' },
+  { label: 'Canopy temp', value: '+1.2', unit: '°C', tone: 'down' },
+  { label: 'Link', value: '12', unit: 'ms', tone: '' },
+]
+
+function useTick() {
   const [tick, setTick] = useState(0)
   useEffect(() => {
-    if (!running) return undefined
     const timer = setInterval(() => setTick((value) => value + 1), 1400)
     return () => clearInterval(timer)
-  }, [running])
+  }, [])
   return tick
 }
 
 export default function DroneOps() {
-  const [selected, setSelected] = useState(0)
+  const [focus, setFocus] = useState({ kind: 'drone', index: 0 })
   const [spraying, setSpraying] = useState(true)
   const [mode, setMode] = useState('drone')
-  const tick = useMissionClock(true)
+  const tick = useTick()
 
-  const drone = FLEET[selected]
   const mission = Math.min(0.97, 0.43 + tick * 0.0011)
+  const focusedId = useMemo(() => {
+    if (focus.kind === 'drone') return DRONES[focus.index]?.id
+    if (focus.kind === 'robot') return ROBOTS[focus.index]?.id
+    return CAMERAS[focus.index]?.id
+  }, [focus])
 
-  const telemetry = useMemo(() => {
-    const wave = Math.sin(tick / 3.2)
-    return {
-      altitude: (7.4 + selected * 0.9 + wave * 0.16).toFixed(1),
-      speed: (8.4 + Math.sin(tick / 4.1) * 0.3).toFixed(1),
-      flow: spraying ? (2.1 + Math.sin(tick / 2.3) * 0.07).toFixed(2) : '0.00',
-      tank: spraying ? Math.max(16, 68 - tick * 0.11).toFixed(0) : '68',
-      battery: Math.max(24, 92 - tick * 0.05).toFixed(0),
-    }
-  }, [tick, selected, spraying])
+  const select = (kind, index) => setFocus({ kind, index })
 
   return (
     <>
-      <section className="flight-stage" aria-label="Live drone mission">
-        <DroneScene selected={selected} spraying={spraying} mode={mode} speed={1} onPick={setSelected} />
+      <section className="flight-stage" aria-label="Live field autonomy">
+        <DroneScene focus={focus} spraying={spraying} mode={mode} speed={1} onFocus={setFocus} />
 
         <div className="flight-overlay">
           <div className="flight-top">
             <div className="flight-tag">
               <span className="flight-dot" aria-hidden="true" />
-              Mission live
+              Baseline locked
               <em>sim</em>
             </div>
             <dl className="flight-readouts">
-              <div>
-                <dt>Altitude</dt>
-                <dd>{telemetry.altitude}<i>m</i></dd>
-              </div>
-              <div>
-                <dt>Ground speed</dt>
-                <dd>{telemetry.speed}<i>m/s</i></dd>
-              </div>
-              <div>
-                <dt>Flow</dt>
-                <dd>{telemetry.flow}<i>l/min</i></dd>
-              </div>
-              <div>
-                <dt>Tank</dt>
-                <dd>{telemetry.tank}<i>%</i></dd>
-              </div>
-              <div>
-                <dt>Battery</dt>
-                <dd>{telemetry.battery}<i>%</i></dd>
-              </div>
+              {READOUTS.map((item) => (
+                <div key={item.label}>
+                  <dt>{item.label}</dt>
+                  <dd className={item.tone}>
+                    {item.value}
+                    {item.unit ? <i>{item.unit}</i> : null}
+                  </dd>
+                </div>
+              ))}
             </dl>
           </div>
 
           <div className="flight-bottom">
-            <div className="flight-fleet" role="tablist" aria-label="Aircraft">
-              {FLEET.map((unit, index) => (
+            <div className="flight-fleet" role="tablist" aria-label="Field agents">
+              {DRONES.map((unit, index) => (
                 <button
                   key={unit.id}
                   type="button"
                   role="tab"
-                  aria-selected={index === selected}
-                  className={`fleet-chip${index === selected ? ' on' : ''}`}
-                  onClick={() => setSelected(index)}
+                  aria-selected={focus.kind === 'drone' && focus.index === index}
+                  className={`fleet-chip${focus.kind === 'drone' && focus.index === index ? ' on' : ''}`}
+                  onClick={() => select('drone', index)}
                 >
                   <span className="fleet-id">{unit.id}</span>
                   <span className="fleet-role">{unit.role}</span>
                 </button>
               ))}
+              {ROBOTS.map((unit, index) => (
+                <button
+                  key={unit.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={focus.kind === 'robot' && focus.index === index}
+                  className={`fleet-chip robot${focus.kind === 'robot' && focus.index === index ? ' on' : ''}`}
+                  onClick={() => select('robot', index)}
+                >
+                  <span className="fleet-id">{unit.id}</span>
+                  <span className="fleet-role">{unit.state}</span>
+                </button>
+              ))}
             </div>
             <div className="flight-progress">
-              <span className="flight-progress-label">Mission</span>
+              <span className="flight-progress-label">Pass</span>
               <span className="flight-progress-track">
                 <i style={{ width: `${mission * 100}%` }} />
               </span>
@@ -110,15 +133,26 @@ export default function DroneOps() {
             <div
               className="flight-pip"
               style={{ width: PIP.w, height: PIP.h, right: PIP.m, bottom: PIP.m }}
-              aria-label={`Live camera feed from ${drone.id}`}
+              aria-label={`Live camera feed from ${focusedId}`}
             >
-              <span className="pip-label">{drone.id} · nose cam</span>
+              <span className="pip-label">{focusedId} · {focus.kind} cam</span>
               <span className="pip-reticle" aria-hidden="true" />
               <span className="pip-rec" aria-hidden="true" />
             </div>
           ) : null}
         </div>
       </section>
+
+      <div className="pipeline" aria-label="Processing pipeline">
+        {STAGES.map((stage, index) => (
+          <div className="pipe" key={stage.name}>
+            <span className="pipe-num">{String(index + 1).padStart(2, '0')}</span>
+            <b>{stage.name}</b>
+            <em>{stage.detail}</em>
+            <span className="pipe-ms">{stage.ms}</span>
+          </div>
+        ))}
+      </div>
 
       <div className="flight-bar">
         <div className="flight-actions">
@@ -128,100 +162,145 @@ export default function DroneOps() {
             aria-pressed={spraying}
             onClick={() => setSpraying((value) => !value)}
           >
-            {spraying ? 'Spray running' : 'Spray paused'}
+            {spraying ? 'Treatment on' : 'Treatment paused'}
           </button>
           <button
             type="button"
             className="flight-btn"
             onClick={() => setMode((value) => (value === 'drone' ? 'field' : 'drone'))}
           >
-            {mode === 'drone' ? 'Hide nose cam' : 'Show nose cam'}
+            {mode === 'drone' ? 'Hide agent cam' : 'Show agent cam'}
           </button>
         </div>
-        <p className="flight-hint">Drag to orbit the field · scroll to zoom · click an aircraft or the field camera to read it.</p>
+        <p className="flight-hint">Drag to orbit · scroll to zoom · click a drone, a robot or a camera pole to open its feed.</p>
       </div>
 
       <div className="drone-grid">
-        <Panel
-          title="Flight plan"
-          hint="Three aircraft working the eleven weak zones under manual supervision"
-          actions={<Badge tone="green">in flight</Badge>}
-        >
-          <div className="fleet-list">
-            {FLEET.map((unit, index) => {
-              const active = index === selected
-              const battery = Math.max(24, 92 - tick * 0.05 - index * 4)
-              const tank = Math.max(16, 68 - tick * 0.11 - index * 7)
-              return (
-                <button
-                  key={unit.id}
-                  type="button"
-                  className={`fleet-row${active ? ' on' : ''}`}
-                  onClick={() => setSelected(index)}
-                >
-                  <span className="fleet-swatch" style={{ background: unit.tint }} aria-hidden="true" />
-                  <span className="fleet-name">
-                    <b>{unit.id}</b>
-                    <em>{unit.role}</em>
-                  </span>
-                  <span className="fleet-stat">
-                    <em>Tank</em>
-                    <b>{Math.round(tank)}%</b>
-                  </span>
-                  <span className="fleet-stat">
-                    <em>Battery</em>
-                    <b>{Math.round(battery)}%</b>
-                  </span>
-                  <span className="fleet-stat">
-                    <em>Area</em>
-                    <b>{[48, 39, 27][index]} ha</b>
-                  </span>
-                  <span className={`fleet-state${active ? ' live' : ''}`}>{active ? 'on pass' : 'in flight'}</span>
-                </button>
-              )
-            })}
-          </div>
-          <p className="fleet-note">
-            Spray is released only over the zones the crop scan marked as weak, so the aircraft fly narrow passes instead of
-            blanketing the field. Tank mix and litres per hectare are logged against every pass.
-          </p>
-        </Panel>
+        <div className="drone-side">
+          <Panel
+            title="Agents in the field"
+            hint="Three survey drones above, three ground robots acting on the drift zones"
+            actions={<Badge tone="green">6 online</Badge>}
+          >
+            <div className="fleet-list">
+              {DRONES.map((unit, index) => {
+                const active = focus.kind === 'drone' && focus.index === index
+                const battery = Math.max(24, 92 - tick * 0.05 - index * 4)
+                const tank = Math.max(16, 68 - tick * 0.11 - index * 7)
+                return (
+                  <button
+                    key={unit.id}
+                    type="button"
+                    className={`fleet-row${active ? ' on' : ''}`}
+                    onClick={() => select('drone', index)}
+                  >
+                    <span className="fleet-swatch drone" aria-hidden="true" />
+                    <span className="fleet-name">
+                      <b>{unit.id}</b>
+                      <em>{unit.role}</em>
+                    </span>
+                    <span className="fleet-stat">
+                      <em>Tank</em>
+                      <b>{Math.round(tank)}%</b>
+                    </span>
+                    <span className="fleet-stat">
+                      <em>Battery</em>
+                      <b>{Math.round(battery)}%</b>
+                    </span>
+                    <span className="fleet-stat">
+                      <em>Alt</em>
+                      <b>{(7.2 + index * 1.15).toFixed(1)} m</b>
+                    </span>
+                    <span className={`fleet-state${active ? ' live' : ''}`}>{active ? 'on pass' : 'surveying'}</span>
+                  </button>
+                )
+              })}
+              {ROBOTS.map((unit, index) => {
+                const active = focus.kind === 'robot' && focus.index === index
+                return (
+                  <button
+                    key={unit.id}
+                    type="button"
+                    className={`fleet-row${active ? ' on' : ''}`}
+                    onClick={() => select('robot', index)}
+                  >
+                    <span className="fleet-swatch robot" aria-hidden="true" />
+                    <span className="fleet-name">
+                      <b>{unit.id}</b>
+                      <em>{unit.task}</em>
+                    </span>
+                    <span className="fleet-stat">
+                      <em>Tank</em>
+                      <b>{[62, 48, 74][index]}%</b>
+                    </span>
+                    <span className="fleet-stat">
+                      <em>Battery</em>
+                      <b>{[71, 58, 66][index]}%</b>
+                    </span>
+                    <span className="fleet-stat">
+                      <em>Speed</em>
+                      <b>{unit.state === 'treating' ? '0.0' : '1.4'} m/s</b>
+                    </span>
+                    <span className={`fleet-state${active ? ' live' : ''}`}>{unit.state}</span>
+                  </button>
+                )
+              })}
+            </div>
+            <p className="fleet-note">
+              Each robot receives the coordinate of a zone that drifted from the baseline, drives to it and works only that
+              patch — water, foliar feed or a bio-fungicide, chosen from what the comparison says is wrong.
+            </p>
+          </Panel>
+        </div>
 
         <div className="drone-side">
-          <Panel title="Field camera" hint="East gate · 12 frames per second" actions={<Badge tone="teal">online</Badge>}>
-            <dl className="cam-readings">
-              <div>
-                <dt>Canopy NDVI</dt>
-                <dd>0.61</dd>
-              </div>
-              <div>
-                <dt>Soil moisture</dt>
-                <dd>24<i>%</i></dd>
-              </div>
-              <div>
-                <dt>Leaf wetness</dt>
-                <dd>18<i>min</i></dd>
-              </div>
-              <div>
-                <dt>Air temp</dt>
-                <dd>27.4<i>°C</i></dd>
-              </div>
+          <Panel title="Baseline" hint="The first survey is the permanent reference" actions={<Badge tone="teal">locked</Badge>}>
+            <dl className="baseline">
+              {BASELINE.map(([term, value]) => (
+                <div key={term}>
+                  <dt>{term}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
             </dl>
-            <div className="cam-bars" aria-hidden="true">
-              <span /> <span /> <span /> <span />
-            </div>
-            <p className="cam-note">Frames arrive continuously; the dashboard only keeps the readings, never the video.</p>
+            <p className="cam-note">
+              Every new reading is compared with this wheat survey — never with yesterday's. That is what makes a 30% moisture
+              drop a measurement rather than an opinion.
+            </p>
           </Panel>
 
-          <Panel title="Spray ledger" hint="Today · logged automatically" flush>
-            <ul className="ledger">
-              {LEDGER.map((row) => (
-                <li key={row.at}>
-                  <span className="ledger-time">{row.at}</span>
-                  <span className="ledger-zone">{row.zone}</span>
-                  <span className="ledger-mix">{row.mix}</span>
+          <Panel title="Depth cameras" hint="Four poles · canopy and soil, every five seconds" actions={<Badge tone="teal">12 Hz</Badge>}>
+            <ul className="cam-list">
+              {CAMERAS.map((unit, index) => (
+                <li key={unit.id} className={focus.kind === 'camera' && focus.index === index ? 'on' : ''}>
+                  <button type="button" onClick={() => select('camera', index)}>
+                    <span className="cam-id">{unit.id}</span>
+                    <span className="cam-at">{unit.at}</span>
+                    <span className="cam-value">NDVI {unit.value}</span>
+                  </button>
                 </li>
               ))}
+            </ul>
+            <p className="cam-note">Frames arrive continuously; only the readings and the 3D reconstruction are kept, never the video.</p>
+          </Panel>
+
+          <Panel title="Dispatch queue" hint="Commands written back to the robots" flush>
+            <ul className="ledger">
+              <li>
+                <span className="ledger-time">now</span>
+                <span className="ledger-zone">R-01 · zone 4</span>
+                <span className="ledger-mix">Irrigate 6.2 mm · 1.8 ha</span>
+              </li>
+              <li>
+                <span className="ledger-time">14:22</span>
+                <span className="ledger-zone">R-03 · zone 7</span>
+                <span className="ledger-mix">Foliar feed 12 l/ha</span>
+              </li>
+              <li>
+                <span className="ledger-time">14:11</span>
+                <span className="ledger-zone">D-02 · zone 9</span>
+                <span className="ledger-mix">Bio-fungicide 3 l/ha</span>
+              </li>
             </ul>
           </Panel>
         </div>

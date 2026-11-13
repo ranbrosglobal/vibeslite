@@ -1709,3 +1709,59 @@ tbody tr:hover td { background: rgba(200, 242, 78, 0.08); }
   .fleet-stat { display: none; }
   .flight-hint { display: none; }
 }
+
+/* ── autonomy loop: pipeline strip, baseline, camera list ─────────────── */
+
+.pipeline {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px; margin: 16px 0 10px;
+}
+.pipe {
+  position: relative; display: grid; gap: 3px;
+  padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper-2);
+}
+.pipe::after {
+  content: "→"; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
+  color: var(--dim); font-size: 11px;
+}
+.pipe:last-child::after { display: none; }
+.pipe-num { font-family: var(--mono); font-size: 8px; letter-spacing: 0.16em; color: var(--dim); }
+.pipe b { font-size: 12.5px; letter-spacing: -0.01em; color: var(--ink); }
+.pipe em {
+  font-style: normal; font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim);
+}
+.pipe-ms { position: absolute; top: 12px; right: 14px; font-family: var(--mono); font-size: 9px; color: var(--leaf); }
+
+.flight-readouts dd.down { color: #ffbf5e; }
+.flight-readouts dd.up { color: var(--signal); }
+
+.fleet-chip.robot .fleet-id { color: #ffd166; }
+.fleet-chip.on.robot .fleet-id { color: var(--signal); }
+.fleet-swatch.drone { background: var(--signal-2); }
+.fleet-swatch.robot { background: #ffd166; }
+
+.baseline { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; margin: 0; }
+.baseline dt {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--dim);
+}
+.baseline dd { margin: 4px 0 0; font-family: var(--mono); font-size: 12.5px; color: var(--ink); }
+
+.cam-list { list-style: none; margin: 0; padding: 0; }
+.cam-list button {
+  display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: center;
+  gap: 10px; width: 100%; padding: 8px 0; border: 0; border-bottom: 1px solid var(--line);
+  background: none; cursor: pointer; text-align: left;
+}
+.cam-list li:last-child button { border-bottom: 0; }
+.cam-list li.on { background: rgba(200, 242, 78, 0.12); }
+.cam-id { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--dim); }
+.cam-list li.on .cam-id { color: var(--ink); }
+.cam-at { font-size: 12px; color: var(--ink-2); }
+.cam-value { font-family: var(--mono); font-size: 10px; color: var(--dim); }
+
+@media (max-width: 980px) {
+  .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pipe:nth-child(2)::after { display: none; }
+}
