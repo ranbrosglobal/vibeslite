@@ -5,9 +5,35 @@
 #
 # docker-compose.yml builds both targets, mounts data/ and outputs/ so
 # analysis results survive container rebuilds.
+#
+# The backend stage is deliberately LAST: Vercel's container runtime builds the
+# final stage of this file and serves it behind /api and /outputs (see
+# vercel.json), so the image it produces has to be the API. docker-compose.yml
+# names the stages explicitly, so the order makes no difference there.
 
 # --------------------------------------------------------------------------- #
-# Backend: FastAPI + geospatial + OpenCV + visualization
+# Frontend: React + Vite dashboard served by the Vite dev server
+# --------------------------------------------------------------------------- #
+FROM node:20-alpine AS frontend
+
+ENV NODE_ENV=development
+
+WORKDIR /app
+
+# Install dependencies first so the layer is cached across source changes.
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci --no-audit --no-fund
+
+COPY frontend/ ./
+
+EXPOSE 5173
+
+# Vite proxies /api and /outputs to the backend (see vite.config.js), so the
+# browser only ever talks to this single origin.
+CMD ["npx", "vite", "--host", "0.0.0.0", "--port", "5173", "--strictPort"]
+
+# --------------------------------------------------------------------------- #
+# Backend: FastAPI + geospatial + OpenCV + visualization (default/final stage)
 # --------------------------------------------------------------------------- #
 FROM python:3.11-slim AS backend
 
@@ -37,33 +63,18 @@ COPY config.yaml ./config.yaml
 COPY backend/ backend/
 COPY tests/ tests/
 
+# Ship the demo results so a deployed container has something to show in
+# /api/results and /outputs before anyone runs a new analysis.
+COPY outputs/ outputs/
+
 RUN mkdir -p data/raw data/processed outputs
 
+# Vercel's container runtime injects PORT; docker-compose keeps using 8000.
+ENV PORT=8000
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=25s --retries=3 \
-    CMD curl -fsS http://127.0.0.1:8000/api/health || exit 1
+    CMD curl -fsS "http://127.0.0.1:${PORT:-8000}/api/health" || exit 1
 
 WORKDIR /app/backend
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-
-# --------------------------------------------------------------------------- #
-# Frontend: React + Vite dashboard served by the Vite dev server
-# --------------------------------------------------------------------------- #
-FROM node:20-alpine AS frontend
-
-ENV NODE_ENV=development
-
-WORKDIR /app
-
-# Install dependencies first so the layer is cached across source changes.
-COPY frontend/package.json frontend/package-lock.json ./
-RUN npm ci --no-audit --no-fund
-
-COPY frontend/ ./
-
-EXPOSE 5173
-
-# Vite proxies /api and /outputs to the backend (see vite.config.js), so the
-# browser only ever talks to this single origin.
-CMD ["npx", "vite", "--host", "0.0.0.0", "--port", "5173", "--strictPort"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]

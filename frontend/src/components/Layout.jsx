@@ -7,6 +7,7 @@ const NAV = [
   { to: '/crop-health', num: '01', label: 'Crop', full: 'Crop health' },
   { to: '/soil-health', num: '02', label: 'Soil', full: 'Soil health' },
   { to: '/leaf-check', num: '03', label: 'Leaf', full: 'Leaf check' },
+  { to: '/drone-ops', num: '04', label: 'Flight', full: 'Drone operations' },
 ]
 
 const SECTIONS = {
@@ -33,6 +34,14 @@ const SECTIONS = {
     subtitle: 'One clear photo of one leaf, named in plain words — with the steps that actually help.',
     source: 'On-device · 29 classes',
     note: 'Runs in the browser · nothing is uploaded',
+  },
+  '/drone-ops': {
+    index: '04',
+    eyebrow: 'Flight ops',
+    title: 'Drone operations',
+    subtitle: 'Three spray aircraft working the weak zones, with a live camera in the field and a readout of every pass.',
+    source: 'Field mesh · 12 Hz',
+    note: 'Simulated mission · 3 aircraft',
   },
 }
 

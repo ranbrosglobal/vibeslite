@@ -7,6 +7,8 @@ import SoilHealth from './pages/SoilHealth'
 // The leaf classifier carries TensorFlow.js (~1 MB), so it is only fetched
 // when someone actually opens the Leaf check tab.
 const LeafCheck = lazy(() => import('./pages/LeafCheck'))
+// Three.js is the biggest chunk in the app; the flight view loads it on demand.
+const DroneOps = lazy(() => import('./pages/DroneOps'))
 
 /**
  * The product has two jobs: show how the crop is doing and how the soil is
@@ -21,6 +23,21 @@ export default function App() {
         <Route index element={<Navigate to="/crop-health" replace />} />
         <Route path="crop-health" element={<CropHealth />} />
         <Route path="soil-health" element={<SoilHealth />} />
+        <Route
+          path="drone-ops"
+          element={
+            <Suspense
+              fallback={
+                <div className="loading">
+                  <span className="spinner" />
+                  Spinning up the field view…
+                </div>
+              }
+            >
+              <DroneOps />
+            </Suspense>
+          }
+        />
         <Route
           path="leaf-check"
           element={

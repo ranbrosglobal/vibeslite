@@ -10,13 +10,12 @@ venv
 .pytest_cache
 .ipynb_checkpoints
 
-# Never bake local data or generated analysis output into the image
+# Raw datasets stay out of the image; the generated demo results under
+# outputs/ are copied on purpose so a deployed container has data to serve.
 data/raw/*
 data/processed/*
-outputs/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
-!outputs/.gitkeep
 
 .env
 *.log
