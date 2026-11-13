@@ -70,12 +70,14 @@ COPY demo/outputs/ outputs/
 
 RUN mkdir -p data/raw data/processed outputs
 
-# Vercel's container runtime injects PORT; docker-compose keeps using 8000.
-ENV PORT=8000
-EXPOSE 8000
+# Vercel's container router sends traffic to port 80 unless the project sets
+# PORT. The image therefore listens on 80 by default; docker-compose.yml sets
+# PORT=8000 so the published 8000:8000 mapping keeps working locally.
+ENV PORT=80
+EXPOSE 80
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=25s --retries=3 \
-    CMD curl -fsS "http://127.0.0.1:${PORT:-8000}/api/health" || exit 1
+    CMD curl -fsS "http://127.0.0.1:${PORT:-80}/api/health" || exit 1
 
 WORKDIR /app/backend
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-80}"]
