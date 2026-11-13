@@ -81,7 +81,25 @@ app.get('/api/results/:id', (req, res) => {
 });
 
 app.get('/api/datasets/:name', (req, res) => {
-  res.status(404).json({ detail: `Dataset ${req.params.name} is not part of the demo snapshot.` });
+  const found = (datasets.datasets || []).find((row) => row.name === req.params.name);
+  if (!found) return res.status(404).json({ detail: `Dataset ${req.params.name} is not part of the demo snapshot.` });
+  return res.json(found);
+});
+
+app.get('/api/datasets/:name/footprint', (req, res) => {
+  const found = (datasets.datasets || []).find((row) => row.name === req.params.name);
+  if (!found || !found.bounds_lonlat) {
+    return res.status(404).json({ detail: `No footprint for ${req.params.name} in the demo snapshot.` });
+  }
+  const [west, south, east, north] = found.bounds_lonlat;
+  return res.json({
+    type: 'Feature',
+    properties: { name: found.name },
+    geometry: {
+      type: 'Polygon',
+      coordinates: [[[west, south], [east, south], [east, north], [west, north], [west, south]]],
+    },
+  });
 });
 
 app.get('/api/geo/*', (req, res) => {
