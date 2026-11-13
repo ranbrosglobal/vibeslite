@@ -1,24 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "web": {
-      "root": "frontend",
-      "framework": "vite",
-      "outputDirectory": "dist",
-      "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-    },
-    "api": {
-      "root": ".",
-      "runtime": "container"
-    },
-    "console": {
-      "root": "crop-ai",
-      "framework": "express"
-    }
+  "installCommand": "npm --prefix frontend ci --no-audit --no-fund",
+  "buildCommand": "npm --prefix frontend run build",
+  "outputDirectory": "frontend/dist",
+  "functions": {
+    "api/**/*.js": { "maxDuration": 15 }
   },
-  "rewrites": [
-    { "source": "/outputs/(.*)", "destination": { "service": "api" } },
-    { "source": "/api/(.*)", "destination": { "service": "api" } },
-    { "source": "/(.*)", "destination": { "service": "web" } }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

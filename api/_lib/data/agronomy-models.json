@@ -1,0 +1,258 @@
+{
+ "models": [
+  {
+   "id": "thermal_time",
+   "label": "Thermal time & phenology",
+   "method": "GDD (average / modified / sine) with a cut-out ceiling",
+   "outputs": [
+    "daily GDD",
+    "cumulative GDD",
+    "crop stage",
+    "days to next stage"
+   ],
+   "confidence": "published method, indicative stage lengths",
+   "needs": [
+    "daily Tmin/Tmax",
+    "crop"
+   ]
+  },
+  {
+   "id": "water_balance",
+   "label": "FAO-56 water balance & irrigation",
+   "method": "Single Kc ETc with a root-zone depletion balance",
+   "outputs": [
+    "ETc",
+    "depletion",
+    "Kc/Ks",
+    "irrigation events",
+    "stress days"
+   ],
+   "confidence": "published method, indicative coefficients",
+   "needs": [
+    "daily ET0",
+    "rainfall",
+    "crop",
+    "soil"
+   ]
+  },
+  {
+   "id": "management_zones",
+   "label": "Management zones",
+   "method": "k-means++ on index + weighted spatial position",
+   "outputs": [
+    "zone map",
+    "per-zone statistics",
+    "separation strength"
+   ],
+   "confidence": "descriptive \u2014 ground-truth required",
+   "needs": [
+    "vegetation index raster"
+   ]
+  },
+  {
+   "id": "variable_rate",
+   "label": "Variable-rate prescription",
+   "method": "Proportional-deficit rule over management zones",
+   "outputs": [
+    "per-zone rate",
+    "area-weighted rate",
+    "delta vs flat rate"
+   ],
+   "confidence": "advisory \u2014 depends on the zone map",
+   "needs": [
+    "zones",
+    "product",
+    "base rate",
+    "target index"
+   ]
+  },
+  {
+   "id": "soil_carbon",
+   "label": "Soil carbon screening",
+   "method": "Practice-weighted screening with saturation over time",
+   "outputs": [
+    "trajectory",
+    "t C/ha/yr range",
+    "practice contributions"
+   ],
+   "confidence": "screening only \u2014 not MRV-grade",
+   "needs": [
+    "index observations",
+    "tillage",
+    "cover crop",
+    "residue practice"
+   ]
+  },
+  {
+   "id": "yield_forecast",
+   "label": "Yield forecast (empirical)",
+   "method": "Linear index-integral regression",
+   "outputs": [
+    "estimate",
+    "uncertainty band",
+    "calibration requirement"
+   ],
+   "confidence": "requires local calibration",
+   "needs": [
+    "index series",
+    "fitted coefficient + intercept"
+   ]
+  },
+  {
+   "id": "disease_risk",
+   "label": "Disease weather favourability",
+   "method": "Per-pathogen temperature + wetness rule sets",
+   "outputs": [
+    "per-disease index",
+    "favourable days",
+    "longest run"
+   ],
+   "confidence": "favourability only \u2014 not a diagnosis",
+   "needs": [
+    "daily Tmin/Tmax",
+    "humidity or leaf wetness"
+   ]
+  }
+ ],
+ "crop_coefficients": {
+  "maize": {
+   "kc_ini": 0.3,
+   "kc_mid": 1.2,
+   "kc_end": 0.35,
+   "stages_days": [
+    30,
+    40,
+    50,
+    30
+   ],
+   "gdd_base_c": 10.0,
+   "gdd_maturity": 2700
+  },
+  "wheat": {
+   "kc_ini": 0.3,
+   "kc_mid": 1.15,
+   "kc_end": 0.4,
+   "stages_days": [
+    25,
+    30,
+    50,
+    30
+   ],
+   "gdd_base_c": 0.0,
+   "gdd_maturity": 2100
+  },
+  "rice": {
+   "kc_ini": 1.05,
+   "kc_mid": 1.2,
+   "kc_end": 0.9,
+   "stages_days": [
+    30,
+    30,
+    60,
+    30
+   ],
+   "gdd_base_c": 10.0,
+   "gdd_maturity": 2400
+  },
+  "soybean": {
+   "kc_ini": 0.4,
+   "kc_mid": 1.15,
+   "kc_end": 0.5,
+   "stages_days": [
+    20,
+    35,
+    50,
+    25
+   ],
+   "gdd_base_c": 10.0,
+   "gdd_maturity": 2300
+  },
+  "potato": {
+   "kc_ini": 0.5,
+   "kc_mid": 1.15,
+   "kc_end": 0.75,
+   "stages_days": [
+    25,
+    30,
+    45,
+    30
+   ],
+   "gdd_base_c": 7.0,
+   "gdd_maturity": 1800
+  },
+  "cotton": {
+   "kc_ini": 0.35,
+   "kc_mid": 1.18,
+   "kc_end": 0.6,
+   "stages_days": [
+    30,
+    50,
+    60,
+    55
+   ],
+   "gdd_base_c": 12.0,
+   "gdd_maturity": 2600
+  },
+  "tomato": {
+   "kc_ini": 0.6,
+   "kc_mid": 1.15,
+   "kc_end": 0.8,
+   "stages_days": [
+    30,
+    40,
+    45,
+    30
+   ],
+   "gdd_base_c": 10.0,
+   "gdd_maturity": 1900
+  },
+  "barley": {
+   "kc_ini": 0.3,
+   "kc_mid": 1.15,
+   "kc_end": 0.25,
+   "stages_days": [
+    20,
+    30,
+    50,
+    30
+   ],
+   "gdd_base_c": 0.0,
+   "gdd_maturity": 1900
+  },
+  "grape": {
+   "kc_ini": 0.3,
+   "kc_mid": 0.85,
+   "kc_end": 0.45,
+   "stages_days": [
+    30,
+    60,
+    60,
+    40
+   ],
+   "gdd_base_c": 10.0,
+   "gdd_maturity": 1600
+  },
+  "generic": {
+   "kc_ini": 0.4,
+   "kc_mid": 1.1,
+   "kc_end": 0.5,
+   "stages_days": [
+    25,
+    35,
+    50,
+    30
+   ],
+   "gdd_base_c": 10.0,
+   "gdd_maturity": 2200
+  }
+ },
+ "soil_water_holding_mm_per_m": {
+  "sand": 70.0,
+  "sandy_loam": 110.0,
+  "loam": 160.0,
+  "silt_loam": 180.0,
+  "clay_loam": 200.0,
+  "clay": 220.0,
+  "generic": 150.0
+ }
+}

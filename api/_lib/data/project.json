@@ -1,0 +1,31 @@
+{
+ "name": "Vibes Lite",
+ "version": "0.1.0",
+ "description": "Lightweight open agriculture intelligence platform",
+ "default_index": "NDVI",
+ "crop_health_thresholds": {
+  "very_low": 0.2,
+  "low": 0.4,
+  "moderate": 0.6,
+  "healthy": 0.8
+ },
+ "opencv_enabled": true,
+ "visualization_enabled": true,
+ "inspiration": "Independent implementation inspired by Microsoft FarmVibes.AI concepts (no shared code or runtime dependency).",
+ "paths": {
+  "raw_data": "data/raw",
+  "processed_data": "data/processed",
+  "outputs": "outputs"
+ },
+ "storage": {
+  "raw_files": 6,
+  "results": 1,
+  "outputs_dir": "outputs"
+ },
+ "datasets_by_type": {
+  "raster": 4,
+  "vector": 1,
+  "table": 1,
+  "image": 0
+ }
+}

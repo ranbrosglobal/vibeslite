@@ -1,0 +1,157 @@
+{
+ "count": 6,
+ "datasets": [
+  {
+   "name": "sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif",
+   "type": "raster",
+   "size_mb": 0.431,
+   "modified": 1791870172,
+   "band_count": 7,
+   "band_descriptions": [
+    "B02",
+    "B03",
+    "B04",
+    "B08",
+    "B05",
+    "B8A",
+    "B11"
+   ],
+   "crs": "EPSG:32631",
+   "epsg": 32631,
+   "shape": [
+    145,
+    145
+   ],
+   "resolution": {
+    "x": 10.0,
+    "y": 10.0,
+    "unit": "metre"
+   },
+   "bounds_lonlat": [
+    5.561945051237172,
+    52.524288805148714,
+    5.584060402888401,
+    52.53777582673681
+   ],
+   "area_ha": 210.25,
+   "synthetic": false
+  },
+  {
+   "name": "sentinel2_S2C_31UFU_20260625_0_L2A_68ecd31b.tif",
+   "type": "raster",
+   "size_mb": 1.268,
+   "modified": 1791870430,
+   "band_count": 7,
+   "band_descriptions": [
+    "B02",
+    "B03",
+    "B04",
+    "B08",
+    "B05",
+    "B8A",
+    "B11"
+   ],
+   "crs": "EPSG:32631",
+   "epsg": 32631,
+   "shape": [
+    249,
+    250
+   ],
+   "resolution": {
+    "x": 10.0,
+    "y": 10.0,
+    "unit": "metre"
+   },
+   "bounds_lonlat": [
+    5.7298936772463875,
+    52.756735295499254,
+    5.768314384568023,
+    52.7799523131155
+   ],
+   "area_ha": 622.5,
+   "synthetic": false
+  },
+  {
+   "name": "sentinel2_S2C_31UFU_20260625_0_L2A_c98fb006.tif",
+   "type": "raster",
+   "size_mb": 1.964,
+   "modified": 1791870994,
+   "band_count": 7,
+   "band_descriptions": [
+    "B02",
+    "B03",
+    "B04",
+    "B08",
+    "B05",
+    "B8A",
+    "B11"
+   ],
+   "crs": "EPSG:32631",
+   "epsg": 32631,
+   "shape": [
+    310,
+    311
+   ],
+   "resolution": {
+    "x": 10.0,
+    "y": 10.0,
+    "unit": "metre"
+   },
+   "bounds_lonlat": [
+    5.549296792916446,
+    52.51665690499628,
+    5.596725210347253,
+    52.54549442987585
+   ],
+   "area_ha": 964.1,
+   "synthetic": false
+  },
+  {
+   "name": "synthetic_fields.geojson",
+   "type": "vector",
+   "size_mb": 0.001,
+   "modified": 1790394247,
+   "feature_count": 4,
+   "area_ha": 9911.52,
+   "crs": "EPSG:32633"
+  },
+  {
+   "name": "synthetic_fields.tif",
+   "type": "raster",
+   "size_mb": 8.736,
+   "modified": 1790394247,
+   "band_count": 4,
+   "band_descriptions": [
+    "B02",
+    "B03",
+    "B04",
+    "B08"
+   ],
+   "crs": "EPSG:32633",
+   "epsg": 32633,
+   "shape": [
+    1200,
+    1200
+   ],
+   "resolution": {
+    "x": 10.0,
+    "y": 10.0,
+    "unit": "metre"
+   },
+   "bounds_lonlat": [
+    12.02880868803297,
+    40.86493497532151,
+    12.17585914006037,
+    40.97647614790783
+   ],
+   "area_ha": 14400.0,
+   "synthetic": true
+  },
+  {
+   "name": "synthetic_fields_ndvi_history.csv",
+   "type": "table",
+   "size_mb": 0.001,
+   "modified": 1790394247
+  }
+ ]
+}

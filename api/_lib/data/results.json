@@ -1,0 +1,125 @@
+{
+ "count": 1,
+ "results": [
+  {
+   "id": "crop_health-20261013T054304-1c2697",
+   "kind": "crop_health",
+   "title": "Crop health - sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif",
+   "status": "completed",
+   "created_at": "2026-10-13T05:43:04+00:00",
+   "dataset": "sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif",
+   "aoi": null,
+   "cache_key": "2e56cbecfbe98caf",
+   "summary": {
+    "index": "NDVI",
+    "mean": 0.6155,
+    "healthy_pct": 60.508,
+    "weak_pct": 25.086,
+    "analysed_area_ha": 208.8,
+    "vigour_score": 68.4,
+    "dataset": "sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif",
+    "aoi": "raster_extent",
+    "observation_date": "2026-10-13"
+   },
+   "asset_count": 8,
+   "assets": [
+    {
+     "file": "ndvi_map.png",
+     "name": "index_map",
+     "kind": "image",
+     "label": "NDVI map",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/ndvi_map.png",
+     "bytes": 99218,
+     "map_key": "index_map"
+    },
+    {
+     "file": "ndvi_overlay.png",
+     "name": "index_overlay",
+     "kind": "overlay",
+     "label": "NDVI overlay",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/ndvi_overlay.png",
+     "bytes": 23870,
+     "bounds_lonlat": [
+      5.561945051237172,
+      52.5243312126541,
+      5.584032631515923,
+      52.53777582673681
+     ],
+     "map_key": "index_overlay"
+    },
+    {
+     "file": "index_histogram.png",
+     "name": "histogram",
+     "kind": "chart",
+     "label": "Value distribution",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/index_histogram.png",
+     "bytes": 29528,
+     "map_key": "histogram"
+    },
+    {
+     "file": "crop_health_map.png",
+     "name": "health_map",
+     "kind": "image",
+     "label": "Crop health map",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/crop_health_map.png",
+     "bytes": 39594,
+     "map_key": "health_map"
+    },
+    {
+     "file": "crop_health_overlay.png",
+     "name": "health_overlay",
+     "kind": "overlay",
+     "label": "Crop health overlay",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/crop_health_overlay.png",
+     "bytes": 3092,
+     "bounds_lonlat": [
+      5.561945051237172,
+      52.5243312126541,
+      5.584032631515923,
+      52.53777582673681
+     ],
+     "map_key": "health_overlay"
+    },
+    {
+     "file": "crop_health_distribution.png",
+     "name": "health_distribution",
+     "kind": "chart",
+     "label": "Health distribution",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/crop_health_distribution.png",
+     "bytes": 27359,
+     "map_key": "health_distribution"
+    },
+    {
+     "file": "weak_vegetation_map.png",
+     "name": "weak_vegetation",
+     "kind": "image",
+     "label": "Weak vegetation zones",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/weak_vegetation_map.png",
+     "bytes": 59786,
+     "map_key": "weak_vegetation"
+    },
+    {
+     "file": "weak_vegetation_overlay.png",
+     "name": "weak_vegetation_overlay",
+     "kind": "overlay",
+     "label": "Weak zones overlay",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/weak_vegetation_overlay.png",
+     "bytes": 839,
+     "bounds_lonlat": [
+      5.561945051237172,
+      52.5243312126541,
+      5.584032631515923,
+      52.53777582673681
+     ],
+     "map_key": "weak_vegetation_overlay"
+    }
+   ],
+   "warnings": [
+    "No AOI was supplied, so the full raster extent was used as the analysis boundary. Provide a field boundary for field-level numbers."
+   ]
+  }
+ ],
+ "by_kind": {
+  "crop_health": 1
+ }
+}

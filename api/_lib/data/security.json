@@ -1,0 +1,64 @@
+{
+ "headers": [
+  "Content-Security-Policy",
+  "Cross-Origin-Opener-Policy",
+  "Cross-Origin-Resource-Policy",
+  "Permissions-Policy",
+  "Referrer-Policy",
+  "X-Content-Type-Options",
+  "X-DNS-Prefetch-Control",
+  "X-Frame-Options",
+  "X-Permitted-Cross-Domain-Policies",
+  "X-XSS-Protection"
+ ],
+ "policy": {
+  "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://fastapi.tiangolo.com https://a.tile.opentopomap.org https://mt1.google.com https://server.arcgisonline.com https://tile.openstreetmap.fr https://tile.openstreetmap.org; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+  "frameAncestors": "none",
+  "objectSrc": "none"
+ },
+ "rateLimits": {
+  "read": "1200/min",
+  "write": "240/min",
+  "analysis": "120/min",
+  "scope": "per client address, evaluated per worker process",
+  "disabled": false
+ },
+ "classification": {
+  "analysis": [
+   "/api/ndvi",
+   "/api/crop-health",
+   "/api/opencv",
+   "/api/segmentation",
+   "/api/timeseries",
+   "/api/upload",
+   "/api/samples",
+   "/api/agronomy"
+  ],
+  "write": "any other POST/PUT/PATCH/DELETE",
+  "read": "everything else"
+ },
+ "uploadLimitMb": 200,
+ "extensionAllowLists": {
+  "raster": [
+   ".tif",
+   ".tiff",
+   ".vrt",
+   ".img"
+  ],
+  "vector": [
+   ".geojson",
+   ".json"
+  ],
+  "image": [
+   ".png",
+   ".jpg",
+   ".jpeg",
+   ".tif",
+   ".tiff"
+  ],
+  "table": [
+   ".csv"
+  ]
+ },
+ "note": "No user authentication is implemented. Terminate TLS and add an authenticating reverse proxy before exposing this API to the internet."
+}

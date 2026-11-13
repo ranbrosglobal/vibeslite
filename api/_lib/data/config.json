@@ -1,0 +1,550 @@
+{
+ "analysis": {
+  "default_index": "NDVI",
+  "indices": [
+   {
+    "name": "NDVI",
+    "label": "Normalized Difference Vegetation Index",
+    "bands": [
+     "red",
+     "nir"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     0.2,
+     0.9
+    ],
+    "sensor_hint": "Requires a red and a near-infrared band (Sentinel-2 B04/B08, Landsat 4/5, drone NIR).",
+    "notes": "Primary index. Unaffected by soil brightness for full canopies, but saturates above ~0.8."
+   },
+   {
+    "name": "NDRE",
+    "label": "Normalized Difference Red Edge",
+    "bands": [
+     "nir",
+     "red_edge"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     0.1,
+     0.6
+    ],
+    "sensor_hint": "Needs a red-edge band (Sentinel-2 B05/B06/B07 or MicaSense RedEdge).",
+    "notes": "Better than NDVI for mature, dense canopies and chlorophyll content."
+   },
+   {
+    "name": "EVI",
+    "label": "Enhanced Vegetation Index",
+    "bands": [
+     "blue",
+     "red",
+     "nir"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     0.1,
+     0.8
+    ],
+    "sensor_hint": "Needs blue, red and NIR bands with reflectance values in 0-1.",
+    "notes": "Reduces atmospheric and soil noise; expects scaled reflectance, not raw DN."
+   },
+   {
+    "name": "SAVI",
+    "label": "Soil-Adjusted Vegetation Index",
+    "bands": [
+     "red",
+     "nir"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     0.1,
+     0.8
+    ],
+    "sensor_hint": "Needs red and NIR bands.",
+    "notes": "Useful on sparse canopies where exposed soil biases NDVI."
+   },
+   {
+    "name": "GNDVI",
+    "label": "Green Normalized Difference Vegetation Index",
+    "bands": [
+     "green",
+     "nir"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     0.15,
+     0.8
+    ],
+    "sensor_hint": "Needs green and NIR bands.",
+    "notes": "More sensitive to chlorophyll than NDVI; the usual choice for nitrogen status on a closed canopy."
+   },
+   {
+    "name": "NDMI",
+    "label": "Normalized Difference Moisture Index",
+    "bands": [
+     "nir",
+     "swir1"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     -0.1,
+     0.6
+    ],
+    "sensor_hint": "Needs NIR and SWIR1 (Sentinel-2 B08/B11, Landsat 5/7/8/9).",
+    "notes": "Canopy water content \u2014 separates drought stress from nitrogen stress where NDVI cannot."
+   },
+   {
+    "name": "NDWI",
+    "label": "Normalized Difference Water Index",
+    "bands": [
+     "green",
+     "nir"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     -0.6,
+     0.1
+    ],
+    "sensor_hint": "Needs green and NIR bands.",
+    "notes": "Positive over open water and saturated soil; used to find ponding and drainage problems."
+   },
+   {
+    "name": "OSAVI",
+    "label": "Optimized Soil-Adjusted Vegetation Index",
+    "bands": [
+     "red",
+     "nir"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     0.1,
+     0.9
+    ],
+    "sensor_hint": "Needs red and NIR bands.",
+    "notes": "Fixed 0.16 soil-brightness correction \u2014 the standard soil-adjusted index for agricultural canopies."
+   },
+   {
+    "name": "MSAVI",
+    "label": "Modified Soil-Adjusted Vegetation Index (MSAVI2)",
+    "bands": [
+     "red",
+     "nir"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     0.1,
+     0.9
+    ],
+    "sensor_hint": "Needs red and NIR bands.",
+    "notes": "Self-adjusting soil line and later saturation than NDVI \u2014 the best default on sparse or patchy emergence."
+   },
+   {
+    "name": "PSRI",
+    "label": "Plant Senescence Reflectance Index",
+    "bands": [
+     "red",
+     "green",
+     "blue"
+    ],
+    "range": [
+     -1.0,
+     1.0
+    ],
+    "normalized": true,
+    "typical_vegetation_range": [
+     -0.2,
+     0.6
+    ],
+    "sensor_hint": "Needs red, green and blue bands (any RGB sensor).",
+    "notes": "Tracks ripening and senescence after NDVI has flattened \u2014 useful for harvest timing."
+   },
+   {
+    "name": "CVI",
+    "label": "Chlorophyll Vegetation Index",
+    "bands": [
+     "red",
+     "green",
+     "nir"
+    ],
+    "range": [
+     0.0,
+     10.0
+    ],
+    "normalized": false,
+    "typical_vegetation_range": [
+     0.5,
+     8.0
+    ],
+    "sensor_hint": "Needs red, green and NIR bands.",
+    "notes": "Ratiometric in green, so it tolerates uneven illumination across a drone mosaic."
+   },
+   {
+    "name": "RECI",
+    "label": "Red-Edge Chlorophyll Index",
+    "bands": [
+     "nir",
+     "red_edge"
+    ],
+    "range": [
+     0.0,
+     10.0
+    ],
+    "normalized": false,
+    "typical_vegetation_range": [
+     0.5,
+     6.0
+    ],
+    "sensor_hint": "Needs a red-edge band (Sentinel-2 B05/B06/B07, MicaSense RedEdge).",
+    "notes": "Stays sensitive in dense canopies where normalised indices saturate."
+   },
+   {
+    "name": "GCI",
+    "label": "Green Chlorophyll Index",
+    "bands": [
+     "green",
+     "nir"
+    ],
+    "range": [
+     0.0,
+     10.0
+    ],
+    "normalized": false,
+    "typical_vegetation_range": [
+     0.5,
+     6.0
+    ],
+    "sensor_hint": "Needs green and NIR bands \u2014 works on ordinary RGB+NIR drone payloads.",
+    "notes": "The green-band sibling of RECI, for sensors without a red-edge band."
+   }
+  ],
+  "band_tokens": {
+   "blue": [
+    "blue",
+    "b02",
+    "b2",
+    "band2",
+    "band_2"
+   ],
+   "green": [
+    "green",
+    "b03",
+    "b3",
+    "band3",
+    "band_3"
+   ],
+   "red": [
+    "red",
+    "b04",
+    "b4",
+    "band4",
+    "band_4"
+   ],
+   "red_edge": [
+    "rededge",
+    "red_edge",
+    "red edge",
+    "b05",
+    "b5",
+    "band5",
+    "band_5",
+    "b06",
+    "b6",
+    "b07",
+    "b7"
+   ],
+   "nir": [
+    "nir",
+    "b08",
+    "b8",
+    "band8",
+    "band_8",
+    "b8a",
+    "nir08",
+    "nearinfrared"
+   ],
+   "swir1": [
+    "swir1",
+    "swir_1",
+    "b11",
+    "band11",
+    "band_11",
+    "swir"
+   ],
+   "swir2": [
+    "swir2",
+    "swir_2",
+    "b12",
+    "band12",
+    "band_12"
+   ]
+  }
+ },
+ "crop_health": {
+  "thresholds": {
+   "very_low": 0.2,
+   "low": 0.4,
+   "moderate": 0.6,
+   "healthy": 0.8
+  },
+  "classes": [
+   {
+    "key": "very_low",
+    "label": "Very low vegetation",
+    "short": "Very low",
+    "colour": "#8c3a1f",
+    "hex": "#8c3a1f",
+    "severity": "high",
+    "description": "Bare soil, senescent or severely stressed canopy. Very little active green biomass."
+   },
+   {
+    "key": "low",
+    "label": "Low vegetation",
+    "short": "Low",
+    "colour": "#c07a1e",
+    "hex": "#c07a1e",
+    "severity": "elevated",
+    "description": "Sparse or stressed canopy. Often early emergence, poor establishment or localised stress."
+   },
+   {
+    "key": "moderate",
+    "label": "Moderate vegetation",
+    "short": "Moderate",
+    "colour": "#c9b03c",
+    "hex": "#c9b03c",
+    "severity": "watch",
+    "description": "Developing canopy with partial ground cover. Expect a mix of soil and leaf signal."
+   },
+   {
+    "key": "healthy",
+    "label": "Healthy vegetation",
+    "short": "Healthy",
+    "colour": "#4f9d5d",
+    "hex": "#4f9d5d",
+    "severity": "low",
+    "description": "Well developed, photosynthetically active canopy."
+   },
+   {
+    "key": "very_healthy",
+    "label": "Very healthy vegetation",
+    "short": "Very healthy",
+    "colour": "#1d6b3c",
+    "hex": "#1d6b3c",
+    "severity": "none",
+    "description": "Dense, vigorous canopy at or near full cover for the observed crop stage."
+   }
+  ],
+  "note": "Thresholds are configurable in config.yaml or per request (thresholds override)."
+ },
+ "opencv": {
+  "operations": [
+   "adaptive_threshold",
+   "blur",
+   "clean_mask",
+   "denoise",
+   "dilate",
+   "edges",
+   "enhance",
+   "erode",
+   "grayscale",
+   "invert",
+   "median_blur",
+   "morph_close",
+   "morph_gradient",
+   "morph_open",
+   "otsu",
+   "remove_small_objects",
+   "resize",
+   "threshold"
+  ],
+  "presets": [
+   {
+    "key": "clean_binary",
+    "label": "Threshold + morphology + contours",
+    "operations": [
+     "grayscale",
+     "denoise",
+     "blur",
+     "otsu",
+     "morph_open",
+     "morph_close"
+    ]
+   },
+   {
+    "key": "edges",
+    "label": "Denoise + edge detection",
+    "operations": [
+     "grayscale",
+     "denoise",
+     "edges"
+    ]
+   },
+   {
+    "key": "enhance",
+    "label": "Denoise + CLAHE enhancement",
+    "operations": [
+     "denoise",
+     "enhance"
+    ]
+   },
+   {
+    "key": "veg_mask",
+    "label": "Vegetation mask from a band",
+    "operations": [
+     "grayscale",
+     "blur",
+     "otsu",
+     "morph_open",
+     "morph_close",
+     "remove_small_objects"
+    ]
+   }
+  ]
+ },
+ "segmentation": {
+  "classical": [
+   {
+    "key": "threshold",
+    "label": "Index threshold segmentation",
+    "description": "Binary mask from a fixed value on a vegetation index or single band.",
+    "params": {
+     "threshold": "float, default 0.4",
+     "comparison": "'above' | 'below'",
+     "min_area_ha": "float, default 0.05"
+    },
+    "requires_training": false
+   },
+   {
+    "key": "otsu",
+    "label": "Otsu segmentation",
+    "description": "Automatic threshold chosen from the image histogram (OpenCV Otsu).",
+    "params": {
+     "min_area_ha": "float, default 0.05",
+     "invert": "bool, default false"
+    },
+    "requires_training": false
+   },
+   {
+    "key": "multi_threshold",
+    "label": "Multi-class threshold segmentation",
+    "description": "Splits the index into ordered classes (bare soil / sparse / moderate / dense) using configurable edges.",
+    "params": {
+     "boundaries": "list[float], default crop-health thresholds",
+     "min_area_ha": "float, default 0.05"
+    },
+    "requires_training": false
+   },
+   {
+    "key": "zones",
+    "label": "Connected-component zones",
+    "description": "Connected-component labelling of an existing mask into discrete zones with areas.",
+    "params": {
+     "min_area_ha": "float, default 0.05",
+     "connectivity": "4 | 8, default 8"
+    },
+    "requires_training": false
+   }
+  ],
+  "models": [
+   {
+    "key": "unet",
+    "task": "segmentation",
+    "label": "U-Net (semantic segmentation)",
+    "available": false,
+    "backend": "torch",
+    "input": "4-band or RGB patch, normalised reflectance",
+    "loader": "torch.load / torch.jit.load of a trained checkpoint",
+    "install_hint": "pip install torch --index-url https://download.pytorch.org/whl/cpu",
+    "notes": "Register a loader with register_model('unet', fn) once a trained checkpoint exists.",
+    "registered": false
+   },
+   {
+    "key": "deeplab",
+    "task": "segmentation",
+    "label": "DeepLabV3+ (semantic segmentation)",
+    "available": false,
+    "backend": "torch",
+    "input": "RGB or multispectral patch, 3-4 channels",
+    "loader": "torchvision.models.segmentation.deeplabv3_resnet50(weights=None)",
+    "install_hint": "pip install torch torchvision (CPU wheels are enough)",
+    "notes": "Vibes Lite intentionally does not download pretrained weights automatically.",
+    "registered": false
+   },
+   {
+    "key": "yolo_seg",
+    "task": "detection+segmentation",
+    "label": "YOLO segmentation",
+    "available": false,
+    "backend": "ultralytics",
+    "input": "RGB image / orthomosaic tile",
+    "loader": "YOLO('model.pt') instance segmentation",
+    "install_hint": "pip install ultralytics (optional, not required by the platform)",
+    "notes": "Suited to per-plant or per-weed detection on drone imagery.",
+    "registered": false
+   },
+   {
+    "key": "torchscript",
+    "task": "any",
+    "label": "Custom TorchScript / ONNX model",
+    "available": false,
+    "backend": "torch | onnxruntime",
+    "input": "defined by the exported model",
+    "loader": "torch.jit.load(path) or onnxruntime.InferenceSession(path)",
+    "install_hint": "pip install torch or onnxruntime when a model is available",
+    "notes": "Use register_model('torchscript', loader) with your exported artifact.",
+    "registered": false
+   }
+  ],
+  "default": "threshold",
+  "note": "Classical methods work out of the box. Model-backed methods appear in the registry so a trained U-Net / DeepLab / YOLO-seg checkpoint can be added later without changing the pipeline or the API."
+ },
+ "visualization": {
+  "charts": {
+   "index_map": "Continuous vegetation index map with legend",
+   "index_overlay": "Transparent EPSG:4326 overlay for the web map",
+   "health_map": "Discrete crop-health class map",
+   "health_distribution": "Class share bar chart",
+   "histogram": "Index value histogram with class boundaries",
+   "weak_vegetation": "Weak-vegetation zones",
+   "timeseries": "Index over time with trend and healthy-area share",
+   "change_map": "Diverging change map between two observations",
+   "observation_comparison": "2x2 comparison grid of two observations"
+  }
+ },
+ "disclaimer": "Vibes Lite computes vegetation indices and index-based health classes. These describe canopy greenness and density and are not a diagnosis of crop disease, pest pressure or nutrient deficiency."
+}

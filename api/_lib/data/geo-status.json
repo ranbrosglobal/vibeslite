@@ -1,0 +1,133 @@
+{
+ "enabled": true,
+ "providers": [
+  {
+   "name": "Nominatim",
+   "role": "forward and reverse geocoding",
+   "url": "https://nominatim.openstreetmap.org",
+   "licence": "ODbL 1.0",
+   "attribution": "\u00a9 OpenStreetMap contributors",
+   "policy": "Maximum 1 request per second and an identifying User-Agent - both enforced here."
+  },
+  {
+   "name": "Overpass API",
+   "role": "map features (roads, water, land use) as GeoJSON",
+   "url": "https://overpass-api.de/api/interpreter",
+   "licence": "ODbL 1.0",
+   "attribution": "\u00a9 OpenStreetMap contributors",
+   "policy": "Shared public instance: queries are radius-capped and cached rather than streamed per pan."
+  },
+  {
+   "name": "OSM raster tiles",
+   "role": "basemaps",
+   "hosts": [
+    "a.tile.opentopomap.org",
+    "tile.openstreetmap.fr",
+    "tile.openstreetmap.org"
+   ],
+   "licence": "ODbL 1.0",
+   "attribution": "\u00a9 OpenStreetMap contributors",
+   "policy": "OpenStreetMap tile servers are donated capacity: they are for interactive use at a human pace, not for bulk download or prefetching a whole AOI."
+  }
+ ],
+ "basemaps": [
+  {
+   "key": "osm",
+   "label": "OSM Street",
+   "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+   "tile_host": "tile.openstreetmap.org",
+   "attribution": "\u00a9 OpenStreetMap contributors",
+   "licence": "ODbL 1.0",
+   "max_zoom": 19,
+   "provider": "OpenStreetMap Foundation",
+   "style": "street",
+   "note": "The reference OpenStreetMap raster style. Volunteer-mapped, so detail varies by region."
+  },
+  {
+   "key": "osm_hot",
+   "label": "OSM Humanitarian",
+   "url": "https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+   "tile_host": "tile.openstreetmap.fr",
+   "attribution": "\u00a9 OpenStreetMap contributors, Tiles: Humanitarian OpenStreetMap Team",
+   "licence": "ODbL 1.0",
+   "max_zoom": 20,
+   "provider": "Humanitarian OpenStreetMap Team",
+   "style": "street",
+   "note": "HOT styling emphasises roads, tracks, settlements and water - useful for rural access planning."
+  },
+  {
+   "key": "osm_topo",
+   "label": "OSM Terrain",
+   "url": "https://a.tile.opentopomap.org/{z}/{x}/{y}.png",
+   "tile_host": "a.tile.opentopomap.org",
+   "attribution": "\u00a9 OpenStreetMap contributors, SRTM | \u00a9 OpenTopoMap (CC-BY-SA)",
+   "licence": "ODbL 1.0 + CC-BY-SA 3.0 (OpenTopoMap)",
+   "max_zoom": 17,
+   "provider": "OpenTopoMap",
+   "style": "terrain",
+   "note": "Contour lines and hillshade on top of OpenStreetMap data - the drainage read, not the crop read."
+  }
+ ],
+ "feature_kinds": [
+  {
+   "key": "roads",
+   "label": "Roads and tracks",
+   "note": "Every highway class, including farm tracks (highway=track) and service ways."
+  },
+  {
+   "key": "waterways",
+   "label": "Waterways and ditches",
+   "note": "Drains, ditches, canals and streams - the lines that decide where water leaves a field."
+  },
+  {
+   "key": "water",
+   "label": "Water bodies",
+   "note": "Standing water: ponds, reservoirs, lakes."
+  },
+  {
+   "key": "landuse",
+   "label": "Land use",
+   "note": "Includes farmland, meadow, orchard, forest and industrial ground - the field's real neighbours."
+  },
+  {
+   "key": "buildings",
+   "label": "Buildings and yards",
+   "note": "Farm buildings, sheds and tanks - useful for yard and access planning."
+  },
+  {
+   "key": "barriers",
+   "label": "Hedges and fences",
+   "note": "Mapped hedgerows and fences. Real fields are often unbounded in OSM, so absence here means unmapped, not absent."
+  }
+ ],
+ "default_kinds": [
+  "roads",
+  "waterways",
+  "water",
+  "landuse"
+ ],
+ "limits": {
+  "requests_per_second": 0.91,
+  "cache_seconds": 900.0,
+  "max_results": 8,
+  "max_radius_m": 5000,
+  "max_features": 400,
+  "timeout_seconds": 10.0,
+  "retry_once_on_gateway_errors": true,
+  "retry_statuses": [
+   500,
+   502,
+   503,
+   504
+  ],
+  "never_retried": [
+   429
+  ]
+ },
+ "reachable": null,
+ "last_ok_at": null,
+ "last_error": null,
+ "cached_entries": 0,
+ "upstream_calls": 0,
+ "note": "A 5xx from a provider is retried once after a pause; a 429 is never retried, because that is the provider asking us to slow down. All OpenStreetMap access is server-side: the browser talks only to this API, which spaces requests to the public per-second policy, caches replies, and reports the attribution and licence the map must carry. Data is \u00a9 OpenStreetMap contributors under ODbL 1.0 - attribution is a licence condition, not a courtesy."
+}

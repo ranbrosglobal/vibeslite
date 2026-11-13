@@ -1,0 +1,14 @@
+{
+ "count": 1,
+ "aois": [
+  {
+   "name": "synthetic_fields.geojson",
+   "type": "vector",
+   "size_mb": 0.001,
+   "modified": 1790394247,
+   "feature_count": 4,
+   "area_ha": 9911.52,
+   "crs": "EPSG:32633"
+  }
+ ]
+}

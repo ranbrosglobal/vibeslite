@@ -1,0 +1,64 @@
+{
+ "status": "ok",
+ "service": "Vibes Lite",
+ "version": "0.1.0",
+ "time": "2026-11-13T12:21:47+00:00",
+ "capabilities": {
+  "indices": [
+   "NDVI",
+   "NDRE",
+   "EVI",
+   "SAVI",
+   "GNDVI",
+   "NDMI",
+   "NDWI",
+   "OSAVI",
+   "MSAVI",
+   "PSRI",
+   "CVI",
+   "RECI",
+   "GCI"
+  ],
+  "opencv": true,
+  "visualization": true,
+  "segmentation_methods": [
+   "threshold",
+   "otsu",
+   "multi_threshold",
+   "zones"
+  ],
+  "timeseries": true,
+  "agronomy": [
+   "thermal_time",
+   "water_balance",
+   "management_zones",
+   "variable_rate",
+   "soil_carbon",
+   "yield_forecast",
+   "disease_risk"
+  ],
+  "satellite": {
+   "enabled": true,
+   "collections": [
+    "sentinel-2-l2a"
+   ],
+   "default_collection": "sentinel-2-l2a",
+   "limits": {
+    "max_radius_m": 5000,
+    "max_scenes": 20,
+    "max_cloud_cover": 60.0,
+    "max_pixels": 2000000,
+    "window_days": 120
+   },
+   "cache": {
+    "cached_entries": 0,
+    "calls": 0,
+    "last_error": null,
+    "last_ok_at": null,
+    "bytes_read": 0,
+    "scenes_fetched": 0
+   }
+  }
+ },
+ "inspiration": "Independent implementation inspired by Microsoft FarmVibes.AI concepts (no shared code or runtime dependency)."
+}

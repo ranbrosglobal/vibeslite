@@ -1,0 +1,306 @@
+{
+ "totals": {
+  "fields_available": 1,
+  "rasters_available": 4,
+  "analysed_fields": 1,
+  "analyses": 1,
+  "results": 1,
+  "analysed_area_ha": 208.8
+ },
+ "index": {
+  "mean_ndvi": 0.6155,
+  "mean_healthy_pct": 60.51,
+  "mean_weak_pct": 25.09,
+  "series": [
+   {
+    "id": "crop_health-20261013T054304-1c2697",
+    "date": "2026-10-13",
+    "mean": 0.6155,
+    "healthy_pct": 60.508,
+    "dataset": "sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif"
+   }
+  ]
+ },
+ "activity": [
+  {
+   "id": "crop_health-20261013T054304-1c2697",
+   "kind": "crop_health",
+   "title": "Crop health - sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif",
+   "status": "completed",
+   "created_at": "2026-10-13T05:43:04+00:00",
+   "dataset": "sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif",
+   "aoi": null,
+   "cache_key": "2e56cbecfbe98caf",
+   "summary": {
+    "index": "NDVI",
+    "mean": 0.6155,
+    "healthy_pct": 60.508,
+    "weak_pct": 25.086,
+    "analysed_area_ha": 208.8,
+    "vigour_score": 68.4,
+    "dataset": "sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif",
+    "aoi": "raster_extent",
+    "observation_date": "2026-10-13"
+   },
+   "asset_count": 8,
+   "assets": [
+    {
+     "file": "ndvi_map.png",
+     "name": "index_map",
+     "kind": "image",
+     "label": "NDVI map",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/ndvi_map.png",
+     "bytes": 99218,
+     "map_key": "index_map"
+    },
+    {
+     "file": "ndvi_overlay.png",
+     "name": "index_overlay",
+     "kind": "overlay",
+     "label": "NDVI overlay",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/ndvi_overlay.png",
+     "bytes": 23870,
+     "bounds_lonlat": [
+      5.561945051237172,
+      52.5243312126541,
+      5.584032631515923,
+      52.53777582673681
+     ],
+     "map_key": "index_overlay"
+    },
+    {
+     "file": "index_histogram.png",
+     "name": "histogram",
+     "kind": "chart",
+     "label": "Value distribution",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/index_histogram.png",
+     "bytes": 29528,
+     "map_key": "histogram"
+    },
+    {
+     "file": "crop_health_map.png",
+     "name": "health_map",
+     "kind": "image",
+     "label": "Crop health map",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/crop_health_map.png",
+     "bytes": 39594,
+     "map_key": "health_map"
+    },
+    {
+     "file": "crop_health_overlay.png",
+     "name": "health_overlay",
+     "kind": "overlay",
+     "label": "Crop health overlay",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/crop_health_overlay.png",
+     "bytes": 3092,
+     "bounds_lonlat": [
+      5.561945051237172,
+      52.5243312126541,
+      5.584032631515923,
+      52.53777582673681
+     ],
+     "map_key": "health_overlay"
+    },
+    {
+     "file": "crop_health_distribution.png",
+     "name": "health_distribution",
+     "kind": "chart",
+     "label": "Health distribution",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/crop_health_distribution.png",
+     "bytes": 27359,
+     "map_key": "health_distribution"
+    },
+    {
+     "file": "weak_vegetation_map.png",
+     "name": "weak_vegetation",
+     "kind": "image",
+     "label": "Weak vegetation zones",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/weak_vegetation_map.png",
+     "bytes": 59786,
+     "map_key": "weak_vegetation"
+    },
+    {
+     "file": "weak_vegetation_overlay.png",
+     "name": "weak_vegetation_overlay",
+     "kind": "overlay",
+     "label": "Weak zones overlay",
+     "url": "/outputs/crop_health-20261013T054304-1c2697/weak_vegetation_overlay.png",
+     "bytes": 839,
+     "bounds_lonlat": [
+      5.561945051237172,
+      52.5243312126541,
+      5.584032631515923,
+      52.53777582673681
+     ],
+     "map_key": "weak_vegetation_overlay"
+    }
+   ],
+   "warnings": [
+    "No AOI was supplied, so the full raster extent was used as the analysis boundary. Provide a field boundary for field-level numbers."
+   ]
+  }
+ ],
+ "datasets": [
+  {
+   "name": "sentinel2_S2C_31UFU_20260625_0_L2A_50e36e08.tif",
+   "type": "raster",
+   "size_mb": 0.431,
+   "modified": 1791870172,
+   "band_count": 7,
+   "band_descriptions": [
+    "B02",
+    "B03",
+    "B04",
+    "B08",
+    "B05",
+    "B8A",
+    "B11"
+   ],
+   "crs": "EPSG:32631",
+   "epsg": 32631,
+   "shape": [
+    145,
+    145
+   ],
+   "resolution": {
+    "x": 10.0,
+    "y": 10.0,
+    "unit": "metre"
+   },
+   "bounds_lonlat": [
+    5.561945051237172,
+    52.524288805148714,
+    5.584060402888401,
+    52.53777582673681
+   ],
+   "area_ha": 210.25,
+   "synthetic": false
+  },
+  {
+   "name": "sentinel2_S2C_31UFU_20260625_0_L2A_68ecd31b.tif",
+   "type": "raster",
+   "size_mb": 1.268,
+   "modified": 1791870430,
+   "band_count": 7,
+   "band_descriptions": [
+    "B02",
+    "B03",
+    "B04",
+    "B08",
+    "B05",
+    "B8A",
+    "B11"
+   ],
+   "crs": "EPSG:32631",
+   "epsg": 32631,
+   "shape": [
+    249,
+    250
+   ],
+   "resolution": {
+    "x": 10.0,
+    "y": 10.0,
+    "unit": "metre"
+   },
+   "bounds_lonlat": [
+    5.7298936772463875,
+    52.756735295499254,
+    5.768314384568023,
+    52.7799523131155
+   ],
+   "area_ha": 622.5,
+   "synthetic": false
+  },
+  {
+   "name": "sentinel2_S2C_31UFU_20260625_0_L2A_c98fb006.tif",
+   "type": "raster",
+   "size_mb": 1.964,
+   "modified": 1791870994,
+   "band_count": 7,
+   "band_descriptions": [
+    "B02",
+    "B03",
+    "B04",
+    "B08",
+    "B05",
+    "B8A",
+    "B11"
+   ],
+   "crs": "EPSG:32631",
+   "epsg": 32631,
+   "shape": [
+    310,
+    311
+   ],
+   "resolution": {
+    "x": 10.0,
+    "y": 10.0,
+    "unit": "metre"
+   },
+   "bounds_lonlat": [
+    5.549296792916446,
+    52.51665690499628,
+    5.596725210347253,
+    52.54549442987585
+   ],
+   "area_ha": 964.1,
+   "synthetic": false
+  },
+  {
+   "name": "synthetic_fields.geojson",
+   "type": "vector",
+   "size_mb": 0.001,
+   "modified": 1790394247,
+   "feature_count": 4,
+   "area_ha": 9911.52,
+   "crs": "EPSG:32633"
+  },
+  {
+   "name": "synthetic_fields.tif",
+   "type": "raster",
+   "size_mb": 8.736,
+   "modified": 1790394247,
+   "band_count": 4,
+   "band_descriptions": [
+    "B02",
+    "B03",
+    "B04",
+    "B08"
+   ],
+   "crs": "EPSG:32633",
+   "epsg": 32633,
+   "shape": [
+    1200,
+    1200
+   ],
+   "resolution": {
+    "x": 10.0,
+    "y": 10.0,
+    "unit": "metre"
+   },
+   "bounds_lonlat": [
+    12.02880868803297,
+    40.86493497532151,
+    12.17585914006037,
+    40.97647614790783
+   ],
+   "area_ha": 14400.0,
+   "synthetic": true
+  },
+  {
+   "name": "synthetic_fields_ndvi_history.csv",
+   "type": "table",
+   "size_mb": 0.001,
+   "modified": 1790394247
+  }
+ ],
+ "by_kind": {
+  "crop_health": 1
+ },
+ "thresholds": {
+  "very_low": 0.2,
+  "low": 0.4,
+  "moderate": 0.6,
+  "healthy": 0.8
+ }
+}
