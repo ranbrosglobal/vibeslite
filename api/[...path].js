@@ -1,3 +1,0 @@
-'use strict';
-// Catch-all Vercel Function: /api/health, /api/results, /api/results/<id>, ...
-module.exports = require('./_lib/router');

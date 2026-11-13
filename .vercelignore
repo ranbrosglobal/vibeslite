@@ -6,12 +6,12 @@
 .pytest_cache/
 .freebuff/
 .dev/
-notebooks/
-image-dataset/
-qa-evidence/
-data/
+/notebooks/
+/image-dataset/
+/qa-evidence/
+/data/
 .DS_Store
 *.log
 
-# The container API image copies outputs/ into the image (see Dockerfile), so it
-# must stay in the upload. Everything else under outputs/ is generated locally.
+# demo/ must stay in the upload: the web build copies demo/outputs into
+# frontend/public/outputs so the deployed site can serve the analysis maps.

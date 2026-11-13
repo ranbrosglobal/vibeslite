@@ -1,0 +1,13 @@
+{
+  "name": "vibes-lite-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vibes Lite read-only API for the Vercel deployment: serves the bundled demo analysis.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
