@@ -7,13 +7,20 @@
       "outputDirectory": "dist",
       "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
     },
-    "api": {
+    "backend": {
       "root": "api-service",
+      "framework": "express"
+    },
+    "ai": {
+      "root": "ai-service",
       "framework": "express"
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": { "service": "api" } },
+    { "source": "/api", "destination": { "service": "backend" } },
+    { "source": "/api/(.*)", "destination": { "service": "backend" } },
+    { "source": "/ai", "destination": { "service": "ai" } },
+    { "source": "/ai/(.*)", "destination": { "service": "ai" } },
     { "source": "/(.*)", "destination": { "service": "web" } }
   ]
 }

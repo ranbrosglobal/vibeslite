@@ -1,0 +1,13 @@
+{
+  "name": "vibes-lite-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vibes Lite AI service: serves the leaf classifier catalogue and health on Vercel.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
